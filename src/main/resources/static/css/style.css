@@ -1,0 +1,72 @@
+@charset "utf-8";
+
+
+/* Page Template */
+
+body {
+	padding-top:10px;
+	background-color:#dcdfe2;
+}
+
+.special {
+	padding-top: 50px;
+}
+
+.header-footer-background-color{
+	background-color:#ffbd29;
+}
+
+#logo{
+	width:100px;
+	height:50px;
+	margin-left:60px;
+	float:left;
+}
+
+.liens{
+	font-size:16px;
+	font-family:Oswald;
+	text-transform:uppercase;
+}
+
+.sous-liens{
+	font-size:12px;
+	font-family:Oswald;
+	text-transform:uppercase;
+}
+
+.nav-text-color{
+	color:#fff;
+}
+
+fieldset, legend {
+   all: revert;
+   border-color:#ced4;
+   font-style:oblique;
+   font-family:Oswald;
+}
+
+.reset {
+    all: revert;
+}
+
+.form-input-margin-right{
+	margin-right:5px;
+}
+
+.card-title{
+	font-size:15px;
+	font-family:Oswald;
+	text-transform:uppercase;
+}
+
+.custom-cell1{
+	display: inline-block;
+    width: 50%;
+    padding: 5px;
+    box-sizing: border-box;
+    background:green;
+}
+
+
+

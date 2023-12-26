@@ -14,20 +14,20 @@ import lombok.NoArgsConstructor;
 
 
 @Entity
-@Data @NoArgsConstructor @AllArgsConstructor 
+@Data @NoArgsConstructor @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "TYPE", length = 8)
 public abstract class Company {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="company_id")
-	private Long companyId;
-	@Column(unique = true)
-	private String name;
+	protected Long companyId;
+	@Column(unique = true, nullable = false)
+	protected String name;
 	@Column(name="tax_payer_number", unique = true)
-	private String taxPayerNumber;
-	private String email;
+	protected String taxPayerNumber;
+	protected String email;
 	@Column(name="phone_number", unique = true)
-	private String phoneNumber;
+	protected String phoneNumber;
 	
 }

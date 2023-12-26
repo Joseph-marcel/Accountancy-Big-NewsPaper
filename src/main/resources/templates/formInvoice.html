@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html
+     xmlns:th="http://www.thymeleaf.org" 
+     xmlns:layout="http://www.ultraq.net.nz" lang="en"
+     layout:decorate="basic"
+>
+<head>
+<title>Formulaire</title>
+</head>
+<body>
+       <div layout:fragment="content">
+                      <div class="d-flex">
+                   <div class="col-md-10 offset-1">
+                         <div class="card bg-light mb-3 mt-1">
+                               <div class="card-heading bg-primary text-center text-white card-title">Nouvelle facture</div>
+                               <div class="card-body">
+                                     <form action="" method="post">
+                                            <fieldset>
+							                    <legend>Info Facture</legend>
+							                       <div class="col-md-10 offset-1">
+							                          <div class="d-flex flex-row justify-content-center mb-3">
+							                              <div class="form-input-margin-right">
+							                                  <label for="invoiceNumber"  class="form-label">N°:</label>
+							                              </div>
+							                              <div class="form-input-margin-right">
+							                                  <input type="text" class="form-control" id="invoiceNumber" name="invoiceNumber">
+							                              </div>
+							                              <div class="form-input-margin-right">
+							                                  <label for="date"  class="form-label">Date:</label>
+							                              </div>
+							                              <div class="form-input-margin-right">
+							                                  <input type="date" class="form-control" id="date" name="date">
+							                              </div>
+							                              <div class="form-input-margin-right">
+							                                  <label for="amount"  class="form-label">Montant:</label>
+							                              </div>
+							                              <div class="form-input-margin-right">
+							                                  <input type="number" class="form-control" id="amount" name="amount">
+							                              </div>
+							                        </div>
+							                     </div>
+                                            </fieldset>
+                                            <fieldset class="form-group border p-3 mt-3 mb-2">
+                                               <div class="row justify-content-center">
+                                                <div class="col-md-6">
+                                                    <fieldset>
+							                            <legend>Prestataire</legend>
+							                            <div class="d-flex flex-row justify-content-center mb-3">
+							                              <div class="form-input-margin-right">
+							                                  <label for="taxPayNumber"  class="form-label">Immatriculation:</label>
+							                              </div>
+							                              <div class="form-input-margin-right">
+							                                  <input type="text" class="form-control" id="taxPayNumber" name="taxPayNumber">
+							                              </div>
+							                              
+							                             </div>
+							                             <div class="d-flex flex-row justify-content-center mb-3">
+							                              <div class="form-input-margin-right">
+							                                  <label for="name"  class="form-label">Raison Sociale:</label>
+							                              </div>
+							                              <div class="form-input-margin-right">
+							                                  <input type="text" class="form-control" id="name" name="name">
+							                              </div>
+							                             </div>
+							                             <div class="d-flex flex-row justify-content-center mb-3">
+							                              <div class="form-input-margin-right">
+							                                  <label for="email"  class="form-label">Email:</label>
+							                              </div>
+							                              <div class="form-input-margin-right">
+							                                  <input type="email" class="form-control" id="email" name="email">
+							                              </div>
+							                             </div>
+							                             <div class="d-flex flex-row justify-content-center mb-3">
+							                              <div class="form-input-margin-right">
+							                                  <label for="phoneNumber"  class="form-label">Telephone:</label>
+							                              </div>
+							                              <div class="form-input-margin-right">
+							                                  <input type="text" class="form-control" id="phoneNumber" name="phoneNumber">
+							                              </div>
+							                             </div>
+							                        </fieldset>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <fieldset>
+							                            <legend>Prestation</legend>
+							                            <div class="d-flex flex-row justify-content-center mb-3">
+							                              <div class="form-input-margin-right">
+							                                  <label for="allowanceName"  class="form-label">Nature Prestation:</label>
+							                              </div>
+							                              <div class="form-input-margin-right">
+							                                  <input type="text" class="form-control" id="allowanceName" name="allowanceName">
+							                              </div>
+							                             </div>
+							                        </fieldset>
+                                                </div>
+                                               </div>
+                                            </fieldset>
+                                            <div style="float:right;">
+                                                 <button type="submit" class="btn btn-primary rounded">
+					                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
+														  <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0"/>
+														  <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"/>
+													  </svg>
+													  Valider
+                                                 </button>
+							                 </div>
+                                       </form>
+                               </div>
+                         </div>
+                   </div>
+             </div>
+       </div>
+</body>
+</html>

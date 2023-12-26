@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html
+     xmlns:th="http://www.thymeleaf.org" 
+     xmlns:layout="http://www.ultraq.net.nz" lang="en"
+>
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" type="text/css"   th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}"/>
+<link rel="stylesheet" type="text/css" href="../static/css/style.css"  th:href="@{/css/style.css}"/>
+<script  th:src="@{/webjars/bootstrap/5.2.3/js/bootstrap.bundle.js}"/></script>
+<title>template page</title>
+
+</head>
+<body>
+
+    <header>
+           <div class="header-footer-background-color rounded">
+                 
+                 <nav class="navbar navbar-expand-md">
+                    <div class="container-fluid">
+                     <div>
+                          <img src="pictures/ogive.png" class="img-responsive" alt="" id="logo">
+                     </div>
+                     <div style="width:51%;">
+                     <ul class="navbar-nav liens">
+                          <li class="nav-item active dropdown">
+                               <a class="nav-link nav-text-color" th:href="@{/index}">
+                                   accueil
+                               </a>
+                          </li>
+                          <li class="nav-item active dropdown">
+                               <a class="nav-link nav-text-color" th:href="@{/prestataires}">
+                                   prestataires
+                               </a>
+                          </li>
+                          <li class="nav-item active dropdown">
+                               <a class="nav-link nav-text-color" th:href="@{/prestations}">
+                                   prestations
+                               </a>
+                          </li>
+                          <li class="nav-item active dropdown">
+                               <a class="nav-link dropdown-toggle nav-text-color" href="#" data-bs-toggle="dropdown"  role="button"  >
+                                   factures
+                               </a>
+                               <ul class="dropdown-menu sous-liens">
+                                       <li>
+                                           <a class="dropdown-item" th:href="@{/formInvoice}">NOUVELLE FACTURE</a>
+                                       </li>
+                                       <li>
+                                           <a class="dropdown-item" th:href="@{/searchInvoice}">RECHERCHER UNE FACTURE</a>
+                                       </li>
+                                </ul>
+                          </li>
+                          <li class="nav-item dropdown">
+                             <a class="nav-link dropdown-toggle nav-text-color" href="#" data-bs-toggle="dropdown"  role="button">
+                                 login
+                             </a>
+                               <ul class="dropdown-menu sous-liens">
+                                   <li>
+                                       <a class="dropdown-item">logout</a>
+                                   </li>
+                               </ul>
+                         </li>
+                     </ul>
+                     
+                     </div>
+               </div>
+         </nav>
+        <a href="#menu" class="btn-menu-mobile"><i class="fa fa-bars" aria-hidden="true"></i></a>
+       </div>
+           
+    </header>
+
+	<section layout:fragment="content">
+		            
+	</section>
+        
+    <footer class="header-footer-background-color rounded">
+         <div class="container-fluid navbar-fixed-bottom text-center">
+              <small class="text-white liens">Copyright-2023</small>
+         </div>
+    </footer>
+</body>
+</html>
