@@ -170,8 +170,7 @@ public class JournalServiceImpl implements JournalService{
 				.contractor(contractor)
 				.allowance(allowance)
 				.build();
-		   contractor.getInvoices().add(invoice);
-		   allowance.getInvoices().add(invoice);
+		   
 		
 		return invoiceRepo.save(invoice);
 	}
