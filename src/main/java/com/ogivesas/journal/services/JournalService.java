@@ -2,42 +2,38 @@ package com.ogivesas.journal.services;
 
 import java.util.Date;
 
-
 import org.springframework.data.domain.Page;
 
 import com.ogivesas.journal.models.Allowance;
-import com.ogivesas.journal.models.Company;
 import com.ogivesas.journal.models.Contractor;
 import com.ogivesas.journal.models.Customer;
 import com.ogivesas.journal.models.Invoice;
 
 public interface JournalService {
 	
-	public Customer initialCustomer();
-
-	//CRUD entity Company
-	public Contractor addContractor(Contractor company);
-	public Contractor editContractor(Long company_id,Contractor company);
-	public Contractor getContractor(Long company_id); 
-	public void    deleteContractor(Long company_id);
-	public Contractor getContractorByName(String name);
-	public Page<Contractor> listContractors(String type,int page,int size);
+	//CRUD entity Contractor
+	public Contractor addCompany(Invoice invoice);
+	public Contractor getCompanyByName(String name);
 	
 	
 	//CRUD entity Allowance
-	public Allowance addAllowance(Allowance allowance);
-	public Allowance editAllowance(Long allowance_id,Allowance allowance);
-	public Allowance getAllowance(Long allowance_id);
-	public Allowance getAllowanceByName(String name);
-	public void    deleteAllowance(Long allowance_id);
-	public Page<Allowance> listAllowances(int page,int size);
+	public Allowance addAllowance(Invoice invoice);
+	public Allowance getAllowanceByAllowanceName(String name);
+	public Allowance getAllowanceById(Long id);
 	
 	
-	//CRUD entity invoice
-	public Invoice addInvoice(Invoice invoice);
-	public Invoice editInvoice(String invoice_id,Invoice invoice);
-	public Invoice getInvoice(String invoice_id);
-	public void    deleteInvoice(String invoice_id);
-	public Page<Invoice> MonthlyInvoices(int page,int size,Date started_date,Date ended_date);
+	//CRUD entity Customer
+	public void addCustomer(Customer ctsm);
+	public Customer getCustomerByName(String name);
+	
+	
+	//CRUD entity Invoice
+	public void newInvoice(Invoice invoice);
+	public Page<Invoice> listInvoices(int page,int size);
+	public Page<Invoice> listInvoicesPerSearchDate(Date createAt,int page,int size);
+	public Invoice getInvoiceByInvoiceId(String id);
+	public void updateInvoice(Invoice invoice);
+	public void saveInvoice(Invoice invoice);
+	public void deleteInvoice(String id);
 	
 }

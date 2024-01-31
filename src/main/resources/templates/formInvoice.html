@@ -14,52 +14,28 @@
                          <div class="card bg-light mb-3 mt-1">
                                <div class="card-heading bg-primary text-center text-white card-title">Nouvelle facture</div>
                                <div class="card-body">
-                                     <form action="" method="post">
-                                            <fieldset>
-							                    <legend>Info Facture</legend>
-							                       <div class="col-md-10 offset-1">
-							                          <div class="d-flex flex-row justify-content-center mb-3">
-							                              <div class="form-input-margin-right">
-							                                  <label for="invoiceNumber"  class="form-label">N°:</label>
-							                              </div>
-							                              <div class="form-input-margin-right">
-							                                  <input type="text" class="form-control" id="invoiceNumber" name="invoiceNumber">
-							                              </div>
-							                              <div class="form-input-margin-right">
-							                                  <label for="date"  class="form-label">Date:</label>
-							                              </div>
-							                              <div class="form-input-margin-right">
-							                                  <input type="date" class="form-control" id="date" name="date">
-							                              </div>
-							                              <div class="form-input-margin-right">
-							                                  <label for="amount"  class="form-label">Montant:</label>
-							                              </div>
-							                              <div class="form-input-margin-right">
-							                                  <input type="number" class="form-control" id="amount" name="amount">
-							                              </div>
-							                        </div>
-							                     </div>
-                                            </fieldset>
+                                     <form th:action="@{/createInvoice}" method="post">                             
                                             <fieldset class="form-group border p-3 mt-3 mb-2">
                                                <div class="row justify-content-center">
                                                 <div class="col-md-6">
-                                                    <fieldset>
+                                                     <fieldset>
 							                            <legend>Prestataire</legend>
 							                            <div class="d-flex flex-row justify-content-center mb-3">
 							                              <div class="form-input-margin-right">
-							                                  <label for="taxPayNumber"  class="form-label">Immatriculation:</label>
+							                                  <label for="taxPayerNumber"  class="form-label">Immatriculation:</label>
 							                              </div>
 							                              <div class="form-input-margin-right">
-							                                  <input type="text" class="form-control" id="taxPayNumber" name="taxPayNumber">
-							                              </div>
-							                              
+							                                  <input type="text" class="form-control" id="taxPayerNumber" name="contractor.taxPayerNumber" th:value="${invoice.contractor.taxPayerNumber}"/>							                                    
+	                                                            <small id="taxPayerNumberHelp" class="form-text text-muted">Numero unique si applicable</small>                            
+							                              </div>						                              
 							                             </div>
 							                             <div class="d-flex flex-row justify-content-center mb-3">
 							                              <div class="form-input-margin-right">
 							                                  <label for="name"  class="form-label">Raison Sociale:</label>
 							                              </div>
 							                              <div class="form-input-margin-right">
-							                                  <input type="text" class="form-control" id="name" name="name">
+							                                  <input type="text" class="form-control" id="name" name="contractor.name" th:value="${invoice.contractor.name}"/>							                               
+	                                                            <small id="nameHelp" class="form-text text-muted">Nom du prestataire</small>                                       
 							                              </div>
 							                             </div>
 							                             <div class="d-flex flex-row justify-content-center mb-3">
@@ -67,7 +43,8 @@
 							                                  <label for="email"  class="form-label">Email:</label>
 							                              </div>
 							                              <div class="form-input-margin-right">
-							                                  <input type="email" class="form-control" id="email" name="email">
+							                                  <input type="email" class="form-control" id="email" name="contractor.email" th:value="${invoice.contractor.email}"/>     
+	                                                             <small id="emailHelp" class="form-text text-muted">Email si applicable</small>	                                                                 
 							                              </div>
 							                             </div>
 							                             <div class="d-flex flex-row justify-content-center mb-3">
@@ -75,7 +52,8 @@
 							                                  <label for="phoneNumber"  class="form-label">Telephone:</label>
 							                              </div>
 							                              <div class="form-input-margin-right">
-							                                  <input type="text" class="form-control" id="phoneNumber" name="phoneNumber">
+							                                  <input type="text" class="form-control" id="phoneNumber" name="contractor.phoneNumber" th:value="${invoice.contractor.phoneNumber}"/>						                                    
+	                                                            <small id="phoneNumberHelp" class="form-text text-muted">Telephone si applicable</small>	                                                                 
 							                              </div>
 							                             </div>
 							                        </fieldset>
@@ -88,12 +66,48 @@
 							                                  <label for="allowanceName"  class="form-label">Nature Prestation:</label>
 							                              </div>
 							                              <div class="form-input-margin-right">
-							                                  <input type="text" class="form-control" id="allowanceName" name="allowanceName">
+							                                  <input type="text" class="form-control" id="allowanceName" name="allowance.allowanceName" th:value="${invoice.allowance.allowanceName}"/>					                                        
+	                                                          <small id="allowanceNameHelp" class="form-text text-muted">Nature de la prestation</small>
+							                              </div>
+							                              <div class="form-input-margin-right">
+							                                  <input type="hidden" class="form-control" id="customer" name="allowance.customer.companyId" th:value="${invoice.allowance.customer.companyId}"/>					                                        
 							                              </div>
 							                             </div>
 							                        </fieldset>
                                                 </div>
                                                </div>
+                                            </fieldset>
+                                            <fieldset class="form-group border p-3 mt-3 mb-2">
+							                    <legend>Info Facture</legend>
+							                       <div class="col-md-10 offset-1">
+							                          <div class="d-flex flex-row justify-content-center mb-3">
+							                              <div class="form-input-margin-right">
+							                                  <label for="invoiceNumber"  class="form-label">N°:</label>
+							                              </div>
+							                              <div class="form-input-margin-right">
+							                                  <input type="text" class="form-control" id="invoiceNumber" 
+							                                      th:value="${invoice.invoiceNumber}"  name="invoiceNumber"/>						                                        
+							                                      <small id="invoiceNumberHelp" class="form-text text-muted">Numero de la facture</small>
+							                                      <small><span class="text-danger"  th:errors="${invoice.invoiceNumber}"></span></small> 							                                                                                                          
+							                              </div>
+							                              <div class="form-input-margin-right">
+							                                  <label for="createAt"  class="form-label">Date:</label>
+							                              </div>
+							                              <div class="form-input-margin-right">
+							                                  <input type="date" class="form-control" id="createAt" name="createAt" th:value="${invoice.createAt}"/>
+							                                    <small id="dateHelp" class="form-text text-muted">Date de la facture</small>
+							                                    <small><span class="text-danger" th:errors="${invoice.createAt}"></span></small>				                                                                                                    	                                                                     	                                                                
+							                              </div>
+							                              <div class="form-input-margin-right">
+							                                  <label for="amount"  class="form-label">Montant:</label>
+							                              </div>
+							                              <div class="form-input-margin-right">
+							                                  <input type="number" class="form-control" id="amount" name="amount" th:value="${invoice.amount}"/>							                                      
+							                                      <small id="amountHelp" class="form-text text-muted">Montant de la facture</small>							                                          
+                                                                  <small><span class="text-danger"  th:errors="${invoice.amount}"></span></small>                                                                                                                                 
+							                              </div>
+							                        </div>
+							                     </div>
                                             </fieldset>
                                             <div style="float:right;">
                                                  <button type="submit" class="btn btn-primary rounded">
