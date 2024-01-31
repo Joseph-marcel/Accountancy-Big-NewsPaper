@@ -6,22 +6,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ogivesas.journal.models.Allowance;
 import com.ogivesas.journal.models.Customer;
 import com.ogivesas.journal.models.Director;
 import com.ogivesas.journal.models.Invoice;
-import com.ogivesas.journal.repositories.InvoiceRepository;
 import com.ogivesas.journal.services.JournalService;
-
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
