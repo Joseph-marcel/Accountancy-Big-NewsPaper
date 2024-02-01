@@ -5,6 +5,7 @@ import java.util.Date;
 import org.springframework.data.domain.Page;
 
 import com.ogivesas.journal.models.Allowance;
+import com.ogivesas.journal.models.Company;
 import com.ogivesas.journal.models.Contractor;
 import com.ogivesas.journal.models.Customer;
 import com.ogivesas.journal.models.Invoice;
@@ -14,6 +15,7 @@ public interface JournalService {
 	//CRUD entity Contractor
 	public Contractor addCompany(Invoice invoice);
 	public Contractor getCompanyByName(String name);
+	public Page<Contractor> listContractors(String type,int page,int size);
 	
 	
 	//CRUD entity Allowance

@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.ogivesas.journal.models.Allowance;
+import com.ogivesas.journal.models.Company;
 import com.ogivesas.journal.models.Contractor;
 import com.ogivesas.journal.models.Customer;
 import com.ogivesas.journal.models.Director;
@@ -51,6 +52,13 @@ public class JournalServiceImpl implements JournalService{
 		
 		
 		return  (Contractor)companyRepo.findByName(name);
+	}
+	
+	@Override
+	public Page<Contractor> listContractors(String type,int page, int size) {
+		// TODO Auto-generated method stub
+		
+		return (Page<Contractor>)companyRepo.listContractors(type, PageRequest.of(page, size));
 	}
 
 	
@@ -204,6 +212,10 @@ public class JournalServiceImpl implements JournalService{
 		
 		return allowance;
 	}
+
+	
+	
+	
 
     
 }

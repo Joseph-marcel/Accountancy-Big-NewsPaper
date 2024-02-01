@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ogivesas.journal.models.Allowance;
+import com.ogivesas.journal.models.Contractor;
 import com.ogivesas.journal.models.Customer;
 import com.ogivesas.journal.models.Director;
 import com.ogivesas.journal.models.Invoice;
@@ -53,7 +54,23 @@ public class JournalController {
 	
 	
 	@GetMapping("/prestataires")
-	public String prestataires(Model model) {
+	public String prestataires(Model model,String type,
+			@RequestParam(name = "page", defaultValue = "0")int page,
+			@RequestParam(name = "size", defaultValue = "6")int size) {
+		
+		try {
+			  
+			type = "CONTRACT";
+			Page<Contractor> listContractors = iJournalService.listContractors(type,page, size);
+			model.addAttribute("contractors", listContractors.getContent());
+			int[] pages = new int[listContractors.getTotalPages()];
+			model.addAttribute("pages", pages);
+			model.addAttribute("currentPage", page);
+			
+		}catch (Exception e) {
+			
+			model.addAttribute("exception",e);
+		}
 		
 		
 		return "indexPrestataires";
@@ -62,7 +79,9 @@ public class JournalController {
 	
 	
 	@GetMapping("/prestations")
-	public String prestations(Model model) {
+	public String prestations(Model model,
+			@RequestParam(name = "page", defaultValue = "0")int page,
+			@RequestParam(name = "size", defaultValue = "6")int size) {
 		
 		
 		return "indexPrestations";

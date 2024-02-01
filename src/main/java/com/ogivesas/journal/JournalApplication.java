@@ -30,6 +30,7 @@ public class JournalApplication implements CommandLineRunner{
 		// TODO Auto-generated method stub		
 		
 		
+		
 		/*
 		 * Customer cstm = Director.customerBuilder() .name("OGIVE SAS")
 		 * .email("siogivesas@gmail.com") .taxPayerNumber("M091612571014S")
@@ -37,6 +38,7 @@ public class JournalApplication implements CommandLineRunner{
 		 * 
 		 * iJournalService.addCustomer(cstm);
 		 */
+		 
 		 
 	}
 
