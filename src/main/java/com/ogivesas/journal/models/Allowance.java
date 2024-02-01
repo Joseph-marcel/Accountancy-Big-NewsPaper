@@ -2,7 +2,10 @@ package com.ogivesas.journal.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,27 +14,31 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
-@ToString
 public class Allowance {
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="allowance_id")
 	private Long allowanceId;
 	@Column(name="allowance_name",nullable = false)
+	@NotNull
 	private String allowanceName;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JsonManagedReference
 	private Customer customer;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE,orphanRemoval = false)
+	@JsonBackReference
 	private List<Invoice> invoices;
 	
 	
@@ -52,9 +59,9 @@ public class Allowance {
 			return this;
 		}
 		
-		public AllowanceBuilder customer(Customer customer) {
+		public AllowanceBuilder customer(Customer ogivesas) {
 			
-			allowance.customer = customer;
+			allowance.customer = ogivesas;
 			return this;
 		}
 		

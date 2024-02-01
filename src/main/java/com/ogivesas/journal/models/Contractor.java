@@ -2,8 +2,7 @@ package com.ogivesas.journal.models;
 
 import java.util.ArrayList;
 import java.util.List;
-
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -21,7 +20,8 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper= false)
 public class Contractor extends Company{
 
-	@OneToMany(mappedBy = "contractor", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "contractor", fetch = FetchType.EAGER)
+	@JsonBackReference
 	private List<Invoice> invoices;
 	
 	
@@ -30,31 +30,31 @@ public class Contractor extends Company{
 		private Contractor contractor = new Contractor();
 		
 		public CompanyBuilder companyId(Long id) {
-			contractor.companyId =id;
+			contractor.setCompanyId(id);
 			   
 			return this;
 		}
 		
 		public CompanyBuilder name(String name) {
-			contractor.name = name;
+			contractor.setName(name);
 			
 			return this;
 		}
 		
-		public CompanyBuilder taxPayNumber(String taxPayNumber) {
-			contractor.taxPayerNumber = taxPayNumber;
+		public CompanyBuilder taxPayerNumber(String taxPayerNumber) {
+			contractor.setTaxPayerNumber(taxPayerNumber);
 			
 			return this;
 		}
 		
 		public CompanyBuilder email(String email) {
-			contractor.email = email;
+			contractor.setEmail(email);
 			
 			return this;
 		}
 		
 		public CompanyBuilder phoneNumber(String phoneNumber) {
-			contractor.phoneNumber = phoneNumber;
+			contractor.setPhoneNumber(phoneNumber);
 			
 			return this;
 		}

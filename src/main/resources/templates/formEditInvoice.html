@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html
+     xmlns:th="http://www.thymeleaf.org" 
+     xmlns:layout="http://www.ultraq.net.nz" lang="en"
+     layout:decorate="basic"
+>
+<head>
+<title>Edit Invoice</title>
+</head>
+<body>
+       <div layout:fragment="content">
+                      <div class="d-flex">
+                   <div class="col-md-10 offset-1">
+                         <div class="card bg-light mb-3 mt-1">
+                               <div class="card-heading bg-primary text-center text-white card-title">Nouvelle facture</div>
+                               <div class="card-body">
+                                     <form th:action="@{/updateInvoice(page=${page})}" method="post"  th:object="${invoice}">                             
+                                            <fieldset class="form-group border p-3 mt-3 mb-2">
+                                               <div class="row justify-content-center">
+                                                <div class="col-md-6">
+                                                     <fieldset>
+							                            <legend>Prestataire</legend>
+							                            <div class="form-group">
+					                                         <input type="hidden" th:field="*{invoiceId}" class="form-control"/>						
+				                                        </div>			                                        						                            				                             
+							                             <div class="d-flex flex-row justify-content-center mb-3">
+							                              <div class="form-input-margin-right">						                                  					                                        
+	                                                          <small id="nameHelp" class="form-text text-muted">Modifiez les details du prestataire dans le menu "PRESTATAIRES"...!!!</small>
+							                              </div>
+							                              
+							                             </div>						                             
+							                        </fieldset>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <fieldset>
+							                            <legend>Prestation</legend>
+							                            <div class="d-flex flex-row justify-content-center mb-3">						                              
+							                              <div class="form-input-margin-right">						                                  					                                        
+	                                                          <small id="allowance.allowanceNameHelp" class="form-text text-muted">Modifiez les details de la prestation dans le menu "PRESTATIONS"...!!!</small>
+							                              </div>						                              
+							                             </div>
+							                        </fieldset>
+                                                </div>
+                                               </div>
+                                            </fieldset>
+                                            <fieldset class="form-group border p-3 mt-3 mb-2">
+							                    <legend>Info Facture</legend>
+							                       <div class="col-md-10 offset-1">
+							                          <div class="d-flex flex-row justify-content-center mb-3">
+							                              <div class="form-input-margin-right">
+							                                  <label for="invoiceNumber"  class="form-label">N°:</label>
+							                              </div>
+							                              <div class="form-input-margin-right">
+							                                  <input type="text" class="form-control" id="invoiceNumberInput" aria-describedby="invoiceNumberHelp"
+							                                      th:field="*{invoiceNumber}"   placeholder="Type invoice number"/>						                                        
+							                                      <small id="invoiceNumberHelp" class="form-text text-muted">Numero de la facture</small>						                                                                                   
+							                              </div>
+							                              <div class="form-input-margin-right">
+							                                  <label for="createAt"  class="form-label">Date:</label>
+							                              </div>
+							                              <div class="form-input-margin-right">
+							                                  <input type="date" class="form-control" id="createAtInput" aria-describedby="createAtHelp" 
+							                                         placeholder="Type create at" th:field="*{createAt}"/>
+							                                    <small id="createAtHelp" class="form-text text-muted">Date de la facture</small>						                                    				                                                                                                    	                                                                     	                                                                
+							                              </div>
+							                              <div class="form-input-margin-right">
+							                                  <label for="amount"  class="form-label">Montant:</label>
+							                              </div>
+							                              <div class="form-input-margin-right">
+							                                  <input type="number" class="form-control" id="amountInput" aria-describedby="amountHelp" 
+							                                         placeholder="Type amount" th:field="*{amount}"/>
+							                                      <small id="amountHelp" class="form-text text-muted">Montant de la facture</small>							                                                                                                                                                                                                                                           
+							                              </div>
+							                              <div class="form-input-margin-right">
+							                                  <input type="hidden" class="form-control" id="customer" name="allowance.customer.companyId" th:value="${invoice.allowance.customer.companyId}"/>					                                        
+							                              </div>
+							                        </div>
+							                     </div>
+                                            </fieldset>
+                                            <div style="float:right;">
+                                                 <button type="submit" class="btn btn-primary rounded">
+					                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
+														  <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0"/>
+														  <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"/>
+													  </svg>
+													  Enregistrer
+                                                 </button>
+							                 </div>
+                                       </form>
+                               </div>
+                         </div>
+                   </div>
+             </div>
+       </div>
+</body>
+</html>

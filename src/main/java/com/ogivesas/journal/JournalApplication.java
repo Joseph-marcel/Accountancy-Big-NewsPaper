@@ -1,78 +1,44 @@
 package com.ogivesas.journal;
 
 
-
-
-import java.util.List;
+import java.util.UUID;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.domain.Page;
 
-import com.ogivesas.journal.models.Allowance;
-import com.ogivesas.journal.models.Contractor;
 import com.ogivesas.journal.models.Customer;
 import com.ogivesas.journal.models.Director;
-import com.ogivesas.journal.servicesImpl.JournalServiceImpl;
+import com.ogivesas.journal.services.JournalService;
 
 import lombok.AllArgsConstructor;
-import utils.JsonSerializer;
+
+
 
 @SpringBootApplication
 @AllArgsConstructor
 public class JournalApplication implements CommandLineRunner{
-	
-	private JournalServiceImpl journalS;
 
+	private JournalService iJournalService;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(JournalApplication.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
-		// TODO Auto-generated method stub
-		JsonSerializer<Customer> customerJsonSerializer = new JsonSerializer<>();
-		JsonSerializer<Allowance> allowanceJsonSerializer = new JsonSerializer<>();
-		JsonSerializer<Contractor> contractorJsonSerializer = new JsonSerializer<>();
+		// TODO Auto-generated method stub		
+		
 		
 		/*
-		 * Customer cstm = journalS.initialCustomer();
+		 * Customer cstm = Director.customerBuilder() .name("OGIVE SAS")
+		 * .email("siogivesas@gmail.com") .taxPayerNumber("M091612571014S")
+		 * .phoneNumber("(+237) 694 674 286 / 694467 982") .allowances() .build();
 		 * 
-		 * 
-		 * Allowance allowance = Director.allowanceBuilder()
-		 * .allowanceName("Electricité") .customer(cstm) .invoices() .build();
-		 * journalS.addAllowance(allowance);
+		 * iJournalService.addCustomer(cstm);
 		 */
-		
-		
-		Contractor company = Director.contractorBuilder()
-				.name("DOVV Distribution")
-				.email("dovv@yahoo.fr")
-				.taxPayNumber("M0123588497S")
-				.invoices()
-				.build();
-		journalS.addContractor(company);
-		
-		
-		
-		
-		/*
-		 * Page<Contractor> lists = journalS.listContractors("CONTRACTOR", 1, 5);
-		 * lists.stream().map(contractorJsonSerializer.toJson(company))
-		 * .forEach(System.out.println());
-		 */
-		
-		System.out.println("***************************");
-		/*
-		 * System.out.println(allowanceJsonSerializer.toJson(allowance));
-		 * System.out.println(customerJsonSerializer.toJson(cstm));
-		 */
-		System.out.println(contractorJsonSerializer.toJson(company));
-		System.out.println("***************************");
-		
+		 
 	}
 
 	
-
 }

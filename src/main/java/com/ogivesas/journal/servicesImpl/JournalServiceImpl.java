@@ -27,199 +27,183 @@ public class JournalServiceImpl implements JournalService{
 	public  AllowanceRepository allowanceRepo;
 	public  CompanyRepository   companyRepo;
 	public  InvoiceRepository   invoiceRepo;
+
 	
-   
 	
-	
-    //CRUD CONTRACTOR
+	//CRUD entity Contractor
 	@Override
-	public Contractor addContractor(Contractor company) {
+	public Contractor addCompany(Invoice invoice) {
 		// TODO Auto-generated method stub
 		
-		company = Director.contractorBuilder()
-				.name(company.getName())
-				.taxPayNumber(company.getTaxPayerNumber())
-				.email(company.getEmail())
-				.phoneNumber(company.getPhoneNumber())
+		Contractor contractor = Director.contractorBuilder()
+				.name(invoice.getContractor().getName())
+				.taxPayerNumber(invoice.getContractor().getTaxPayerNumber())
+				.email(invoice.getContractor().getEmail())
+				.phoneNumber(invoice.getContractor().getPhoneNumber())
 				.invoices()
 				.build();
-		return companyRepo.save(company);
-	}
-
-	@Override
-	public Contractor editContractor(Long company_id, Contractor contractor) {
-		// TODO Auto-generated method stub
-		
-		Contractor existingContractor = this.getContractor(company_id);
-		           existingContractor.setName(contractor.getName());
-		           existingContractor.setEmail(contractor.getEmail());
-		           existingContractor.setPhoneNumber(contractor.getPhoneNumber());
-		           existingContractor.setTaxPayerNumber(contractor.getTaxPayerNumber());
-		           
-		return companyRepo.save(existingContractor);
-	}
-
-	@Override
-	public Contractor getContractor(Long company_id) {
-		// TODO Auto-generated method stub
-		
-		return (Contractor) companyRepo.findById(company_id).orElse(null);
-	}
-
-	@Override
-	public void deleteContractor(Long company_id) {
-		// TODO Auto-generated method stub
-		
-		Contractor contractor = this.getContractor(company_id);
-		companyRepo.delete(contractor);
-		
-	}
-
-	@Override
-	public Page<Contractor> listContractors(String type, int page, int size) {
-		// TODO Auto-generated method stub
-		
-		return companyRepo.listContractors(type, PageRequest.of(page, size));
+		return companyRepo.save(contractor);
 	}
 	
-
 	@Override
-	public Contractor getContractorByName(String name) {
+	public Contractor getCompanyByName(String name) {
 		// TODO Auto-generated method stub
 		
-		return companyRepo.findByName(name);
+		
+		return  (Contractor)companyRepo.findByName(name);
 	}
 
 	
 	
-	
-	//CRUD ALLOWANCE
+	//CRUD entity Allowance
 	@Override
-	public Allowance addAllowance(Allowance allowance) {
+	public Allowance addAllowance(Invoice invoice) {
 		// TODO Auto-generated method stub
 		
-		Customer cstm = this.initialCustomer();
-		allowance = Director.allowanceBuilder()
-				.allowanceName(allowance.getAllowanceName())
-				.customer(cstm)
+		Allowance allowance = Director.allowanceBuilder()
+				.allowanceName(invoice.getAllowance().getAllowanceName())
+				.customer(invoice.getAllowance().getCustomer())
+				.invoices()
 				.build();
+		
 		return allowanceRepo.save(allowance);
 	}
 
 	@Override
-	public Allowance editAllowance(Long allowance_id, Allowance allowance) {
+	public Allowance getAllowanceByAllowanceName(String name) {
 		// TODO Auto-generated method stub
 		
-		Allowance existingAllowance = this.getAllowance(allowance_id);
-		          existingAllowance.setAllowanceName(allowance.getAllowanceName());
-		return allowanceRepo.save(existingAllowance);
-	}
-
-	@Override
-	public Allowance getAllowance(Long allowance_id) {
-		// TODO Auto-generated method stub
-		
-		return (Allowance) allowanceRepo.findById(allowance_id).orElse(null);
-	}
-	
-	@Override
-	public Allowance getAllowanceByName(String name) {
-		// TODO Auto-generated method stub
 		
 		return allowanceRepo.findByAllowanceName(name);
 	}
 
+	
+	
+	//CRUD entity Customer
 	@Override
-	public void deleteAllowance(Long allowance_id) {
+	public void addCustomer(Customer cstm) {
 		// TODO Auto-generated method stub
 		
-		Allowance allowance = this.getAllowance(allowance_id);
-		allowanceRepo.delete(allowance);
+		
+		companyRepo.save(cstm);
 	}
-
+	
+	
+	//CRUD entity Invoice
 	@Override
-	public Page<Allowance> listAllowances(int page, int size) {
+	public void newInvoice(Invoice invoice) {
 		// TODO Auto-generated method stub
-		return null;
+		
+		  Contractor contractor = this.getCompanyByName(invoice.getContractor().getName());
+		  Allowance allowance = this.getAllowanceByAllowanceName(invoice.getAllowance().getAllowanceName());
+		  
+		  if(contractor == null){ 
+			  if(allowance == null){ 
+				  contractor = this.addCompany(invoice);
+				  allowance = this.addAllowance(invoice);
+				  } else { 
+					  contractor = this.addCompany(invoice);
+				   } 
+			      } else { 
+			    	  if(allowance == null) {
+		             allowance = this.addAllowance(invoice);
+		             } 
+			      }
+					
+					  invoice = Director.invoiceBuilder() 
+							  .invoiceId(UUID.randomUUID().toString())
+					          .invoiceNumber(invoice.getInvoiceNumber()) 
+					          .createAt(invoice.getCreateAt())
+					          .amount(invoice.getAmount()) 
+					          .contractor(contractor) 
+					          .allowance(allowance)
+					  .build();
+						
+						
+						  invoiceRepo.save(invoice);
 	}
 
 	
-	//CRUD INVOICE
 	@Override
-	public Invoice addInvoice(Invoice invoice) {
+	public Page<Invoice> listInvoices(int page, int size) {
 		// TODO Auto-generated method stub
 		
-		Contractor contractor = this.getContractorByName(invoice.getContractor().getName());
-		Allowance allowance = this.getAllowanceByName(invoice.getAllowance().getAllowanceName());
-		if(contractor == null){
-			contractor = this.addContractor(contractor);
-			if(allowance == null){
-				allowance = this.addAllowance(allowance);
-			}
+		return invoiceRepo.listInvoices(PageRequest.of(page, size));
+	}
+
+	@Override
+	public Customer getCustomerByName(String name) {
+		// TODO Auto-generated method stub
+		
+		Customer cstm = (Customer)companyRepo.findByName(name);
+		
+		if(cstm == null) throw new RuntimeException("Ce prestataire n'existe pas.");
+		
+		return cstm;
+	}
+
+	@Override
+	public Page<Invoice> listInvoicesPerSearchDate(Date createAt,int page, int size) {
+		// TODO Auto-generated method stub
+		
+		return invoiceRepo.listInvoicesPerSearchDate(createAt, PageRequest.of(page, size));
+	}
+
+	@Override
+	public Invoice getInvoiceByInvoiceId(String id) {
+		// TODO Auto-generated method stub
+		
+		
+		return invoiceRepo.findByInvoiceId(id);
+	}
+
+	
+	
+	@Override
+	public void updateInvoice(Invoice invoice) {
+		// TODO Auto-generated method stub
+		
+		 Invoice savedInvoice = this.getInvoiceByInvoiceId(invoice.getInvoiceId());
+		 savedInvoice.setInvoiceNumber(invoice.getInvoiceNumber());
+		 savedInvoice.setCreateAt(invoice.getCreateAt());
+		 savedInvoice.setAmount(invoice.getAmount());
+		 
+		 invoiceRepo.save(savedInvoice);
+	}
+
+	
+	
+	@Override
+	public void saveInvoice(Invoice invoice) {
+		// TODO Auto-generated method stub
+		
+		if(invoice.getInvoiceId() != null) {
+			this.updateInvoice(invoice);
 		}else {
-		    if(allowance == null){
-		    	allowance = this.addAllowance(allowance);
-		    }
+			this.newInvoice(invoice);
 		}
 		
-		  invoice = Director.invoiceBuilder()
-				.invoiceId(UUID.randomUUID().toString())
-				.invoiceNumber(invoice.getInvoiceNumber())
-				.date(invoice.getDate())
-				.amount(invoice.getAmount())
-				.contractor(contractor)
-				.allowance(allowance)
-				.build();
-		   
-		
-		return invoiceRepo.save(invoice);
 	}
 
+	
 	@Override
-	public Invoice editInvoice(String invoice_id, Invoice invoice) {
+	public void deleteInvoice(String id) {
 		// TODO Auto-generated method stub
 		
-		Invoice existingInvoice = this.getInvoice(invoice_id);
-		        existingInvoice.setAllowance(invoice.getAllowance());
-		        existingInvoice.setAmount(invoice.getAmount());
-		        existingInvoice.setContractor(invoice.getContractor());
-		        existingInvoice.setDate(invoice.getDate());
-		        existingInvoice.setInvoiceNumber(invoice.getInvoiceNumber());
-		        
-		        
-		return invoiceRepo.save(existingInvoice);
+		
+		 invoiceRepo.deleteById(id);  
 	}
 
 	@Override
-	public Invoice getInvoice(String invoice_id) {
-		// TODO Auto-generated method stub
-		return (Invoice) invoiceRepo.findById(invoice_id).orElse(null);
-	}
-
-	@Override
-	public void deleteInvoice(String invoice_id) {
+	public Allowance getAllowanceById(Long id) {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public Page<Invoice> MonthlyInvoices(int page, int size, Date started_date, Date ended_date) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Customer initialCustomer() {
-		// TODO Auto-generated method stub
+		Allowance allowance = allowanceRepo.findById(id).orElse(null);
 		
-		Customer customer = Director.customerBuilder()
-				.name("OGIVE SAS")
-				.taxPayNumber("M091612571014S")
-				.email("siogivesas@gmail.com")
-				.phoneNumber("(+237) 694 674 286/694 467 982")
-				.allowances()
-				.build();
-		return companyRepo.save(customer);
+		if(allowance == null) throw new RuntimeException("Cette prestation n'existe pas.");
+		
+		return allowance;
 	}
 
+    
 }
