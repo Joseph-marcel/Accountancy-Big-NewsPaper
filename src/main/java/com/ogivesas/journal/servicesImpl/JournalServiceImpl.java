@@ -46,6 +46,7 @@ public class JournalServiceImpl implements JournalService{
 		return companyRepo.save(contractor);
 	}
 	
+	
 	@Override
 	public Contractor getCompanyByName(String name) {
 		// TODO Auto-generated method stub
@@ -54,12 +55,36 @@ public class JournalServiceImpl implements JournalService{
 		return  (Contractor)companyRepo.findByName(name);
 	}
 	
+	
+	@Override
+	public Contractor getCompanyById(Long id) {
+		// TODO Auto-generated method stub
+		
+		return (Contractor)companyRepo.findById(id).orElse(null);
+	}
+
+	
 	@Override
 	public Page<Contractor> listContractors(String type,int page, int size) {
 		// TODO Auto-generated method stub
 		
 		return (Page<Contractor>)companyRepo.listContractors(type, PageRequest.of(page, size));
 	}
+	
+	
+	@Override
+	public void updateContractor(Contractor contractor) {
+		// TODO Auto-generated method stub
+		
+		Contractor savedContractor = this.getCompanyById(contractor.getCompanyId());
+		           savedContractor.setName(contractor.getName());
+		           savedContractor.setTaxPayerNumber(contractor.getTaxPayerNumber());
+		           savedContractor.setEmail(contractor.getEmail());
+		           savedContractor.setPhoneNumber(contractor.getPhoneNumber());
+		           
+		           companyRepo.save(savedContractor);
+	}
+
 
 	
 	
@@ -77,6 +102,7 @@ public class JournalServiceImpl implements JournalService{
 		return allowanceRepo.save(allowance);
 	}
 
+	
 	@Override
 	public Allowance getAllowanceByAllowanceName(String name) {
 		// TODO Auto-generated method stub
@@ -85,6 +111,17 @@ public class JournalServiceImpl implements JournalService{
 		return allowanceRepo.findByAllowanceName(name);
 	}
 
+	@Override
+	public Allowance getAllowanceById(Long id) {
+		// TODO Auto-generated method stub
+		
+		Allowance allowance = allowanceRepo.findById(id).orElse(null);
+		
+		if(allowance == null) throw new RuntimeException("Cette prestation n'existe pas.");
+		
+		return allowance;
+	}
+	
 	
 	
 	//CRUD entity Customer
@@ -201,21 +238,6 @@ public class JournalServiceImpl implements JournalService{
 		
 		 invoiceRepo.deleteById(id);  
 	}
-
-	@Override
-	public Allowance getAllowanceById(Long id) {
-		// TODO Auto-generated method stub
-		
-		Allowance allowance = allowanceRepo.findById(id).orElse(null);
-		
-		if(allowance == null) throw new RuntimeException("Cette prestation n'existe pas.");
-		
-		return allowance;
-	}
-
-	
-	
-	
 
     
 }

@@ -16,6 +16,8 @@ public interface JournalService {
 	public Contractor addCompany(Invoice invoice);
 	public Contractor getCompanyByName(String name);
 	public Page<Contractor> listContractors(String type,int page,int size);
+	public Contractor  getCompanyById(Long id);
+	public void updateContractor(Contractor contractor);
 	
 	
 	//CRUD entity Allowance

@@ -46,14 +46,14 @@ public class Invoice {
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JsonManagedReference
-	@Valid
+	@Valid 
 	@Builder.Default
 	private Contractor contractor = new Contractor();
 	
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JsonManagedReference
-	@Valid
+	@Valid 
 	@Builder.Default
 	private Allowance  allowance = new Allowance();
 
