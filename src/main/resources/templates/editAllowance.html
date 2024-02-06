@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html
+     xmlns:th="http://www.thymeleaf.org" 
+     xmlns:layout="http://www.ultraq.net.nz" lang="en"
+     layout:decorate="basic"
+>
+<head>
+<title>Edit Allowance</title>
+</head>
+<body>
+       <div layout:fragment="content">
+            <div class="col-md-10 offset-1">
+                  <div class="card bg-light mb-3 mt-1">
+                        <div class="card-heading bg-primary text-center text-white card-title">Mise à jour du prestataire</div>
+                        <div class="card-body">
+                              <form th:action="@{/updateAllowance(page=${page})}" method="post"  th:object="${allowance}"> 
+                                  <fieldset class="form-group border p-3 mt-3 mb-2">
+                                       <div class="row justify-content-center">
+                                           <div class="col-md-10">
+                                                <fieldset>
+						                            <legend>Prestation</legend>	
+						                            <div class="form-group">
+					                                      <input type="hidden" th:field="*{allowanceId}" class="form-control"/>
+					                                      <input type="hidden" th:field="*{customer.companyId}" class="form-control"/>						
+				                                    </div>		                     
+						                            <div class="d-flex flex-row justify-content-center mb-3">
+						                              <div class="form-input-margin-right">
+						                                  <label for="allowanceName"  class="form-label">Nature de la prestation:</label>
+						                              </div>
+						                              <div class="form-input-margin-right">
+						                                  <input type="text" class="form-control" id="allowanceName"  th:field="*{allowanceName}" aria-describedby="allowanceName" placeholder="Type allowance name"/>							                                    
+                                                            <small id="taxPayerNumberHelp" class="form-text text-muted">Nature de la prestation si applicable</small>                            
+						                              </div>						                              
+						                             </div>					                     						                             
+							                        </fieldset>
+							                    </div>
+							                 </div> 
+							            </fieldset>
+							            <div style="float:right;">
+                                                 <a th:href="@{/prestations(page=${page})}" class="btn btn-danger rounded">
+					                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
+                                                           <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5"/>
+                                                      </svg>
+													  Annuler
+                                                 </a>
+                                                 <button type="submit" class="btn btn-primary rounded">
+					                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
+														  <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0"/>
+														  <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"/>
+													  </svg>
+													  Enregistrer
+                                                 </button>
+							                 </div>
+                              </form>
+                        </div>
+                  </div>
+            </div>
+      </div>
+</body>
+</html>

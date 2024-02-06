@@ -8,7 +8,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.ogivesas.journal.models.Allowance;
-import com.ogivesas.journal.models.Company;
 import com.ogivesas.journal.models.Contractor;
 import com.ogivesas.journal.models.Customer;
 import com.ogivesas.journal.models.Director;
@@ -123,6 +122,16 @@ public class JournalServiceImpl implements JournalService{
 	}
 	
 	
+	@Override
+	public Page<Allowance> listAllowances(int page, int size) {
+		// TODO Auto-generated method stub
+		
+		return allowanceRepo.findAll(PageRequest.of(page, size));
+	}
+
+	
+	
+	
 	
 	//CRUD entity Customer
 	@Override
@@ -132,6 +141,8 @@ public class JournalServiceImpl implements JournalService{
 		
 		companyRepo.save(cstm);
 	}
+	
+	
 	
 	
 	//CRUD entity Invoice
@@ -238,6 +249,19 @@ public class JournalServiceImpl implements JournalService{
 		
 		 invoiceRepo.deleteById(id);  
 	}
+
+
+	@Override
+	public void updateAllowance(Allowance allowance) {
+		// TODO Auto-generated method stub
+		
+		Allowance savedAllowance = this.getAllowanceById(allowance.getAllowanceId());
+		          savedAllowance.setAllowanceName(allowance.getAllowanceName());
+		          savedAllowance.setCustomer(allowance.getCustomer());
+		          
+		allowanceRepo.save(savedAllowance);
+	}
+
 
     
 }

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -229,10 +228,49 @@ public class JournalController {
 			@RequestParam(name = "page", defaultValue = "0")int page,
 			@RequestParam(name = "size", defaultValue = "6")int size) {
 		
+		try {
+			  
+			Page<Allowance> listAllowances = iJournalService.listAllowances(page, size);
+			model.addAttribute("allowances", listAllowances.getContent());
+			int[] pages = new int[listAllowances.getTotalPages()];
+			model.addAttribute("pages", pages);
+			model.addAttribute("currentPage", page);
+			
+		}catch (Exception e) {
+			
+			model.addAttribute("exception",e);
+		}
 		
 		return "indexPrestations";
 	}
 	
 	
+	@GetMapping("/editAllowance")
+	public String editAllowance(Model model,Long id,
+			@RequestParam(name = "page", defaultValue = "0")int page) {
+		
+		Allowance allowance = Director.allowanceBuilder().build();
+		
+        try {	
+        	
+		    allowance = iJournalService.getAllowanceById(id);
+		    model.addAttribute("allowance", allowance);
+		    model.addAttribute("page", page);
+		    
+		}catch(Exception e){
+			  model.addAttribute("exception",e);
+			  }
+		
+		return "editAllowance";
+	}
+	
+	
+	@PostMapping("/updateAllowance")
+	public String updateAllowance(@RequestParam(defaultValue = "0")int page,Allowance allowance) {
+		
+		 iJournalService.updateAllowance(allowance);
+		 
+		 return "redirect:/prestations?page="+page;
+	}
 	
 }
