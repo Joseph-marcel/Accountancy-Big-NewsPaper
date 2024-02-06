@@ -214,7 +214,6 @@ public class JournalController {
 	@PostMapping("/updateContractor")
 	public String updateContractor(@RequestParam(defaultValue = "0")int page,Contractor contractor) {
 		 
-		System.out.println(contractor.getCompanyId()+" "+contractor.getEmail()+" "+contractor.getTaxPayerNumber());
 		iJournalService.updateContractor(contractor); 
 		
 		return "redirect:/prestataires?page="+ page;
