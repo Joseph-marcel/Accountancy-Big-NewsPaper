@@ -32,7 +32,7 @@ public class JournalController {
 	@GetMapping("/index")
 	public String index(Model model,
 			@RequestParam(name = "page", defaultValue = "0")int page,
-			@RequestParam(name = "size", defaultValue = "6")int size) {
+			@RequestParam(name = "size", defaultValue = "10")int size) {
 		
 		
 		try {
@@ -168,7 +168,7 @@ public class JournalController {
 	@GetMapping("/prestataires")
 	public String prestataires(Model model,String type,
 			@RequestParam(name = "page", defaultValue = "0")int page,
-			@RequestParam(name = "size", defaultValue = "6")int size) {
+			@RequestParam(name = "size", defaultValue = "10")int size) {
 		
 		try {
 			  
@@ -226,7 +226,7 @@ public class JournalController {
 	@GetMapping("/prestations")
 	public String prestations(Model model,
 			@RequestParam(name = "page", defaultValue = "0")int page,
-			@RequestParam(name = "size", defaultValue = "6")int size) {
+			@RequestParam(name = "size", defaultValue = "10")int size) {
 		
 		try {
 			  
