@@ -2,6 +2,7 @@ package com.ogivesas.journal.servicesImpl;
 
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -260,6 +261,22 @@ public class JournalServiceImpl implements JournalService{
 		          savedAllowance.setCustomer(allowance.getCustomer());
 		          
 		allowanceRepo.save(savedAllowance);
+	}
+
+
+	@Override
+	public Page<Invoice> monthlyInvoices(Date startDate, Date endDate,int page,int size) {
+		// TODO Auto-generated method stub
+		
+		return invoiceRepo.listInvoicesPerMonth(startDate, endDate,PageRequest.of(page, size));
+	}
+
+
+	@Override
+	public List<Invoice> invoicesPerMonth(Date startDate, Date endDate) {
+		// TODO Auto-generated method stub
+		
+		return invoiceRepo.invoicesPerMonth(startDate, endDate);
 	}
 
 

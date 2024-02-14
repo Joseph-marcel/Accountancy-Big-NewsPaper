@@ -1,6 +1,8 @@
 package com.ogivesas.journal.controller;
 
 import java.util.Date;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -161,6 +163,62 @@ public class JournalController {
 	}
 	
 	
+	@GetMapping("/monthInvoice")
+	public String monthInvoice(Model model,
+			@RequestParam(defaultValue = "0")int page,
+			@RequestParam(defaultValue = "10")int size) {
+		
+        try {
+			
+			Page<Invoice> listInvoices = iJournalService.listInvoices(page, size);
+			model.addAttribute("invoices", listInvoices.getContent());
+			int[] pages = new int[listInvoices.getTotalPages()-1]; 
+			model.addAttribute("pages", pages);
+			model.addAttribute("currentPage", page);
+			
+		}catch (Exception e){
+			
+			model.addAttribute("exception",e);
+		}
+		
+		
+		return "monthlyInvoices";
+	}
+	
+	@GetMapping("/montlyAmount")
+	public String montlyAmount(Model model,
+			@DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+			@DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+			@RequestParam(name = "page", defaultValue = "0")int page,
+			@RequestParam(name = "size", defaultValue = "6")int size) {
+		
+		        int amount = 0;
+		    
+		    try {
+				
+		    	Page<Invoice> monthlyBills = iJournalService.monthlyInvoices(startDate, endDate, page, size);
+		    	List<Invoice> monthlyInvoices = iJournalService.invoicesPerMonth(startDate, endDate);
+		    	 
+		    	for(Invoice invoice:monthlyInvoices) {
+		    		amount = amount + invoice.getAmount();
+		    	}
+		    	
+				model.addAttribute("invoices", monthlyBills.getContent());
+				int[] pages = new int[monthlyBills.getTotalPages() - 1]; 
+				
+				model.addAttribute("pages", pages);
+				model.addAttribute("currentPage", page);
+				model.addAttribute("amount", amount);
+				model.addAttribute("startDate", startDate);
+				model.addAttribute("endDate", endDate);
+				
+			}catch (Exception e){
+				
+				model.addAttribute("exception",e);
+			}
+		
+		return "monthlyAmount";
+	}
 	
 	//Controller Contractor method
 	

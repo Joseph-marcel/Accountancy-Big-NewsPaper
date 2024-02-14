@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html
+     xmlns:th="http://www.thymeleaf.org" 
+     xmlns:layout="http://www.ultraq.net.nz" lang="en"
+     layout:decorate="basic"
+>
+<head>
+<title>Bilan mensuel</title>
+</head>
+<body>
+     <div layout:fragment="content">
+          <div class="d-flex">
+                <div class="col-md-10 offset-1">
+                     <div class="card bg-light mb-3 mt-1">
+                      <div class="card-heading bg-primary text-center text-white card-title">Recapitulatif mensuel</div>
+                      <div  class="text-success" th:if="${message}"  th:text="${message}">
+                     
+                      </div>
+                              <div class="card-body">
+                                     <form th:action="@{montlyAmount}" method="get">
+                                            <fieldset>
+							                    <legend>Recherche</legend>
+							                       <div class="col-md-11">							                        
+							                          <div class="d-flex flex-row mb-3">							                     
+							                              <div style="margin-right:5px;">
+							                                  <label for="startDate"  class="form-label">Debut du mois:</label>
+							                              </div>
+							                              <div style="margin-right:5px;">
+							                                  <input type="date" class="form-control" id="startDate" name="startDate" th:value="${startDate}" >
+							                              </div>
+							                              <div style="margin-right:5px;">
+							                                  <label for="endDate"  class="form-label">Fin du mois:</label>
+							                              </div>
+							                              <div style="margin-right:5px;">
+							                                  <input type="date" class="form-control" id="endDate" name="endDate" th:value="${endDate}">
+							                              </div>
+							                              <div style="margin-right:25px;">
+							                                  <button type="submit" class="btn btn-primary rounded">
+							                                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                                                       <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                                                       </svg>
+							                                  </button>
+							                              </div>
+							                              <div style="margin-right:5px;">
+							                                  <label for="amount"  class="form-label">Total:</label>
+							                              </div>
+							                              <div style="margin-right:5px;">
+							                                  <input type="text" class="form-control" id="amount" th:value="${amount}" >
+							                              </div>						                              
+							                        </div>
+							                     </div>							                     
+                                            </fieldset>
+                                     </form>
+                                      <fieldset>
+                                              <legend>Resultats</legend>
+                                                 <table class="table table-bordered text-center sous-liens table-striped">
+                                                      <thead style="background-color:#ebebeb;">
+                                       <tr class="header-footer-background-color text-white">
+                                          <th>Date</th><th>Nature Prestation</th><th>Prestataire</th><th>Montant (f cfa)</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                           <tr th:if="${invoices.empty}">
+                                                <td colspan="3">Aucune facture trouvée...!!!</td>
+                                              </tr>
+                                              <tr th:each="invoice: ${invoices}">
+                                                  <td th:text="${invoice.createAt}" class="align-middle"></td>
+                                                  <td th:text="${invoice.allowance.allowanceName}" class="align-middle"></td>
+                                                  <td th:text="${invoice.contractor.name}" class="align-middle"></td>
+                                                  <td th:text="${invoice.amount}" class="align-middle"></td>
+                                              </tr>
+                                    </tbody>
+                                              </table>
+                                              <div class="container">
+                                                    <ul class="nav nav-pills">
+                                                         <li th:each="p,status:${pages}" class="btn-sm btn-info ms-1">
+                                                              <a th:class="${status.index==currentPage?'btn btn-info ms-1':'btn btn-outline-info ms-1'}"
+	                                             th:href="@{/monthlyInvoice(page=${status.index+1})}"  
+	                                             th:text="${status.index+1}">
+                                                              </a>
+                                                         </li>
+                                                    </ul>
+                                              </div>
+                                      </fieldset>
+                               </div>
+                      </div>
+                </div>
+          </div>
+     </div>
+</body>
+</html>
