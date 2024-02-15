@@ -57,7 +57,7 @@
 	                             
                                  </div>
                                <div class="card-body">
-                                     <form th:action="@{searchInvoice}" method="get">
+                                     <form th:action="@{index}" method="get">
                                             <fieldset>
 							                    <legend>Recherche</legend>
 							                       <div class="col-md-3 ">							                        
@@ -66,7 +66,7 @@
 							                                  <label for="createAt"  class="form-label">Date:</label>
 							                              </div>
 							                              <div style="margin-right:5px;">
-							                                  <input type="date" class="form-control" id="createAt" name="createAt" th:value="${createAt}" >
+							                                  <input type="date" class="form-control" id="createAt" name="createAt" th:value="${#dates.format(createAt, 'yyyy-MM-dd')}" >
 							                              </div>
 							                              <div>
 							                                  <button type="submit" class="btn btn-primary rounded">
@@ -120,7 +120,7 @@
                                                           <ul class="nav nav-pills">
                                                                <li th:each="p,status:${pages}" class="btn-sm btn-info ms-1">
                                                                     <a th:class="${status.index==currentPage?'btn btn-info ms-1':'btn btn-outline-info ms-1'}"
-							                                             th:href="@{/index(page=${status.index+1})}"  
+							                                             th:href="@{/index(page=${status.index},createAt=${#dates.format(createAt, 'yyyy-MM-dd')})}"  
 							                                             th:text="${status.index+1}">
                                                                     </a>
                                                                </li>

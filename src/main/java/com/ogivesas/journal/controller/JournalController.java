@@ -33,18 +33,32 @@ public class JournalController {
 	
 	@GetMapping("/index")
 	public String index(Model model,
+			@RequestParam(name = "createAt", defaultValue = "")@DateTimeFormat(pattern = "yyyy-MM-dd") Date createAt,
 			@RequestParam(name = "page", defaultValue = "0")int page,
 			@RequestParam(name = "size", defaultValue = "10")int size) {
 		
-		
+		    model.addAttribute("createAt", createAt);
+		    
 		try {
 			
-			Page<Invoice> listInvoices = iJournalService.listInvoices(page, size);
-			model.addAttribute("invoices", listInvoices.getContent());
-			int[] pages = new int[listInvoices.getTotalPages()]; 
-			model.addAttribute("pages", pages);
-			model.addAttribute("currentPage", page);
-			
+			if(createAt == null) {
+				
+				Page<Invoice> listInvoices = iJournalService.listInvoices(page, size);
+				model.addAttribute("invoices", listInvoices.getContent());
+				int[] pages = new int[listInvoices.getTotalPages()];
+				 model.addAttribute("pages", pages);
+				
+			 }else {
+				 
+				 Page<Invoice> listInvoicesP = iJournalService.listInvoicesPerSearchDate(createAt, page, size);
+				 model.addAttribute("invoices", listInvoicesP.getContent());
+				 int[] pages = new int[listInvoicesP.getTotalPages()]; 
+				 model.addAttribute("pages", pages);
+				 
+			 }
+			    
+			     model.addAttribute("currentPage", page);
+			 
 		}catch (Exception e){
 			
 			model.addAttribute("exception",e);
@@ -91,30 +105,6 @@ public class JournalController {
 		return "redirect:/index";
 	}
 	
-	
-	
-	@GetMapping("/searchInvoice")
-	public String searchInvoice(Model model,@DateTimeFormat(pattern = "yyyy-MM-dd") Date createAt,
-			@RequestParam(name = "page", defaultValue = "0")int page,
-			@RequestParam(name = "size", defaultValue = "6")int size) {
-			
-			  model.addAttribute("createAt", createAt);
-			  
-				  try { 
-					  
-					  Page<Invoice> listInvoicesP = iJournalService.listInvoicesPerSearchDate(createAt, page, size);
-				      model.addAttribute("invoices",listInvoicesP.getContent());
-				      int[] pages = new  int[listInvoicesP.getTotalPages()];
-				      model.addAttribute("pages", pages);
-				      model.addAttribute("currentPage", page);
-				      
-				  } catch(Exception e){
-					  model.addAttribute("exception",e);
-					  }
-				 
-		    
-		return "homePage";
-	}
 	
 	
 	@GetMapping("/editInvoice")
@@ -165,15 +155,39 @@ public class JournalController {
 	
 	@GetMapping("/monthInvoice")
 	public String monthInvoice(Model model,
+			@RequestParam(name = "startDate", defaultValue = "")@DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+			@RequestParam(name = "endDate", defaultValue = "")@DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
 			@RequestParam(defaultValue = "0")int page,
 			@RequestParam(defaultValue = "10")int size) {
 		
+		    model.addAttribute("startDate", startDate);
+		    model.addAttribute("endDate", endDate);
+		
         try {
 			
-			Page<Invoice> listInvoices = iJournalService.listInvoices(page, size);
-			model.addAttribute("invoices", listInvoices.getContent());
-			int[] pages = new int[listInvoices.getTotalPages()-1]; 
-			model.addAttribute("pages", pages);
+        	if(startDate == null & endDate == null) {
+        		
+        		Page<Invoice> listInvoices = iJournalService.listInvoices(page, size);
+    			model.addAttribute("invoices", listInvoices.getContent());
+    			int[] pages = new int[listInvoices.getTotalPages()]; 
+    			model.addAttribute("pages", pages);
+        	}else {
+        		
+        		int amount = 0;
+        		Page<Invoice> monthlyBills = iJournalService.monthlyInvoices(startDate, endDate, page, size);
+		    	List<Invoice> monthlyInvoices = iJournalService.invoicesPerMonth(startDate, endDate);
+		    	 
+		    	for(Invoice invoice:monthlyInvoices) {
+		    		amount = amount + invoice.getAmount();
+		    	}
+		    	
+				model.addAttribute("invoices", monthlyBills.getContent());
+				int[] pages = new int[monthlyBills.getTotalPages() - 1]; 
+				model.addAttribute("pages", pages);
+				model.addAttribute("amount", amount);
+			
+        	}
+			
 			model.addAttribute("currentPage", page);
 			
 		}catch (Exception e){
@@ -185,40 +199,6 @@ public class JournalController {
 		return "monthlyInvoices";
 	}
 	
-	@GetMapping("/montlyAmount")
-	public String montlyAmount(Model model,
-			@DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-			@DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
-			@RequestParam(name = "page", defaultValue = "0")int page,
-			@RequestParam(name = "size", defaultValue = "6")int size) {
-		
-		        int amount = 0;
-		    
-		    try {
-				
-		    	Page<Invoice> monthlyBills = iJournalService.monthlyInvoices(startDate, endDate, page, size);
-		    	List<Invoice> monthlyInvoices = iJournalService.invoicesPerMonth(startDate, endDate);
-		    	 
-		    	for(Invoice invoice:monthlyInvoices) {
-		    		amount = amount + invoice.getAmount();
-		    	}
-		    	
-				model.addAttribute("invoices", monthlyBills.getContent());
-				int[] pages = new int[monthlyBills.getTotalPages() - 1]; 
-				
-				model.addAttribute("pages", pages);
-				model.addAttribute("currentPage", page);
-				model.addAttribute("amount", amount);
-				model.addAttribute("startDate", startDate);
-				model.addAttribute("endDate", endDate);
-				
-			}catch (Exception e){
-				
-				model.addAttribute("exception",e);
-			}
-		
-		return "monthlyAmount";
-	}
 	
 	//Controller Contractor method
 	
