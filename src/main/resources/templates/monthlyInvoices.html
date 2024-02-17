@@ -45,7 +45,7 @@
 							                                  <label for="amount"  class="form-label">Total(F CFA):</label>
 							                              </div>
 							                              <div style="margin-right:5px;">
-							                                  <input type="text" class="form-control text-center" id="amount" th:value="${amount}" >
+							                                  <input type="text" class="form-control text-center" id="amount" th:value="${#numbers.formatInteger(amount,3,'POINT')}" >
 							                              </div>						                              
 							                        </div>
 							                     </div>							                     
@@ -67,7 +67,7 @@
                                                   <td th:text="${invoice.createAt}" class="align-middle"></td>
                                                   <td th:text="${invoice.allowance.allowanceName}" class="align-middle"></td>
                                                   <td th:text="${invoice.contractor.name}" class="align-middle"></td>
-                                                  <td th:text="${invoice.amount}" class="align-middle"></td>
+                                                  <td th:text="${#numbers.formatInteger(invoice.amount,3,'POINT')}" class="align-middle"></td>
                                               </tr>
                                     </tbody>
                                               </table>

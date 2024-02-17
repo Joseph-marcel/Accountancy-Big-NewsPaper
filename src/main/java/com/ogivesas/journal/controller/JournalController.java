@@ -36,8 +36,7 @@ public class JournalController {
 			@RequestParam(name = "createAt", defaultValue = "")@DateTimeFormat(pattern = "yyyy-MM-dd") Date createAt,
 			@RequestParam(name = "page", defaultValue = "0")int page,
 			@RequestParam(name = "size", defaultValue = "10")int size) {
-		
-		    model.addAttribute("createAt", createAt);
+		    
 		    
 		try {
 			
@@ -54,6 +53,7 @@ public class JournalController {
 				 model.addAttribute("invoices", listInvoicesP.getContent());
 				 int[] pages = new int[listInvoicesP.getTotalPages()]; 
 				 model.addAttribute("pages", pages);
+				 model.addAttribute("createAt", createAt);
 				 
 			 }
 			    
@@ -109,7 +109,8 @@ public class JournalController {
 	
 	@GetMapping("/editInvoice")
 	public String editInvoice(Model model,String id,
-			@RequestParam(defaultValue = "0")int page) {
+			@RequestParam(defaultValue = "0")int page,
+			@RequestParam(name = "createAt",defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") Date createAt) {
 		    
 		try {
 			
@@ -117,6 +118,7 @@ public class JournalController {
 			
 		    model.addAttribute("invoice", invoice);
 		    model.addAttribute("page", page);
+		    model.addAttribute("createAt", createAt);
 		
 		} catch(Exception e) {
 			model.addAttribute("exception",e);
@@ -128,7 +130,8 @@ public class JournalController {
 	
 	
 	@PostMapping("/updateInvoice")
-	public String updateInvoice(@RequestParam(defaultValue = "0")int page, Invoice invoice) {
+	public String updateInvoice(@RequestParam(defaultValue = "0")int page,
+			Invoice invoice) {
 		
 		Invoice savedInvoice = iJournalService.getInvoiceByInvoiceId(invoice.getInvoiceId());
 		
