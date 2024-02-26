@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="https://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz" 
+  layout:decorate="basic"
+>
+<head>
+<title>Access Denied</title>
+</head>
+<body>
+       <div layout:fragment="content">
+        <div  class="col-md-6 offset-3 mt-5 card bg-light">
+          <div class="card bg-light">
+            <div class="card-heading bg-success text-center">Access Denied Page</div>
+              <div class="card-body">
+                   <p class="text-center  text-danger">You are not allowed to visit this page...!!!</p>
+                   <small><a class="btn btn-danger" th:href="@{/index}">Go Back</a></small>
+              </div>
+            </div>
+          </div>  
+     </div>
+</body>
+</html>

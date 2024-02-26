@@ -1,14 +1,10 @@
 package com.ogivesas.journal;
 
 
-import java.util.UUID;
-
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.ogivesas.journal.models.Customer;
-import com.ogivesas.journal.models.Director;
 import com.ogivesas.journal.services.JournalService;
 
 import lombok.AllArgsConstructor;
@@ -20,6 +16,8 @@ import lombok.AllArgsConstructor;
 public class JournalApplication implements CommandLineRunner{
 
 	private JournalService iJournalService;
+	
+	
 	
 	public static void main(String[] args) {
 		SpringApplication.run(JournalApplication.class, args);
@@ -39,7 +37,7 @@ public class JournalApplication implements CommandLineRunner{
 		 * iJournalService.addCustomer(cstm);
 		 */
 		 
-		 
+	    
 	}
 
 	
