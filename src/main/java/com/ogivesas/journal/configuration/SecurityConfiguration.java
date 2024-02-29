@@ -23,9 +23,7 @@ public class SecurityConfiguration {
 		        httpSecurity                           
 				.authorizeHttpRequests(authorize -> authorize.requestMatchers("/index","/prestations","/prestataires","/profile").permitAll()
 						                                     .requestMatchers("/formInvoice","/monthInvoice")
-						                                     .hasRole("ACCOUNTANT")
-						                                     .requestMatchers("")
-						                                     .hasRole("ADMIN")
+						                                     .hasRole("ACCOUNTANT")					                                     
 						                                     .requestMatchers("/listUsers")
 						                                     .hasRole("SUPER")
 				                                             .anyRequest()

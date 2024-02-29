@@ -12,11 +12,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ogivesas.journal.configuration.userDetailsConfig.AppRole;
+import com.ogivesas.journal.configuration.userDetailsConfig.AppUser;
 import com.ogivesas.journal.models.Allowance;
 import com.ogivesas.journal.models.Contractor;
 import com.ogivesas.journal.models.Customer;
 import com.ogivesas.journal.models.Director;
 import com.ogivesas.journal.models.Invoice;
+import com.ogivesas.journal.services.CustomUserDetailService;
 import com.ogivesas.journal.services.JournalService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -27,6 +30,7 @@ import lombok.AllArgsConstructor;
 public class JournalController {
 
 	private JournalService iJournalService;
+	private CustomUserDetailService customUserDetailService;
 
 	
 	//Controller Invoice methods
@@ -312,6 +316,58 @@ public class JournalController {
 		 iJournalService.updateAllowance(allowance);
 		 
 		 return "redirect:/prestations?page="+page;
+	}
+	
+	
+	
+	
+	/* Spring Security Section */
+	
+	@GetMapping("/newUser")
+	public String formUser(Model model) {
+		
+		model.addAttribute("appUser", AppUser.builder().build());
+			  
+		return "newUser";
+	}
+	
+	
+	@PostMapping("/createUser")
+	public String createUser(Model model,@Valid AppUser appUser,BindingResult bindingResult) {
+		
+		if(bindingResult.hasErrors()) {
+			
+			return "newUser";
+		}
+		
+		AppUser savedAppUser = customUserDetailService.addNewUser(appUser.getUsername(), appUser.getPassword(), appUser.getEmail(), appUser.getConfirmPassword());
+		
+		return "redirect:/listUsers";
+	}
+	
+	
+	@GetMapping("/newRole")
+	public String newRole(Model model) {
+		
+		model.addAttribute("appRole", AppRole.builder().build());
+		
+		List<AppRole> allRoles = customUserDetailService.listRoles();
+		model.addAttribute("appRoles", allRoles);
+		return "newRole";
+	}
+	
+	
+	@PostMapping("/createRole")
+	public String createRole(Model model,@Valid AppRole appRole, BindingResult bindingResult) {
+		
+		if(bindingResult.hasErrors()) {
+			
+			return "newRole";
+		}
+		
+		AppRole savedAppRole = customUserDetailService.addNewRole(appRole.getRole());
+		
+		return "redirect:/newRole";
 	}
 	
 }

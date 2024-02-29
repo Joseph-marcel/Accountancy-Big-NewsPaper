@@ -5,6 +5,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.ogivesas.journal.configuration.userDetailsConfig.AppRole;
+import com.ogivesas.journal.configuration.userDetailsConfig.AppUser;
+import com.ogivesas.journal.services.CustomUserDetailService;
 import com.ogivesas.journal.services.JournalService;
 
 import lombok.AllArgsConstructor;
@@ -16,6 +19,7 @@ import lombok.AllArgsConstructor;
 public class JournalApplication implements CommandLineRunner{
 
 	private JournalService iJournalService;
+	private CustomUserDetailService  customUser;
 	
 	
 	
@@ -37,7 +41,19 @@ public class JournalApplication implements CommandLineRunner{
 		 * iJournalService.addCustomer(cstm);
 		 */
 		 
-	    
+		/*
+		 * AppUser appUser = customUser.addNewUser("zambio", "1234",
+		 * "zambio13@gmail.com", "1234");
+		 */
+		
+		/*
+		 * AppRole appRole = customUser.addNewRole("SUPER");
+		 * customUser.addRoleToUser("zambio", "SUPER");
+		 */
+		/*
+		 * AppRole accountant = customUser.addNewRole("ACCOUNTANT");
+		 * customUser.addRoleToUser("zambio", "ACCOUNTANT");
+		 */
 	}
 
 	

@@ -3,6 +3,7 @@
      xmlns:th="http://www.thymeleaf.org" 
      xmlns:layout="http://www.ultraq.net.nz" lang="en"
      layout:decorate="basic"
+     xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
 >
 <head>
 <title>Prestataires</title>
@@ -19,7 +20,7 @@
                                                        <table class="table table-bordered text-center sous-liens table-striped">
                                                             <thead style="background-color:#ebebeb;">
 						                                       <tr class="header-footer-background-color text-white">
-						                                          <th>Nom</th><th>Email</th><th>Immatriculation</th><th>Telephone</th><th colspan="2">Actions</th>
+						                                          <th>Nom</th><th>Email</th><th>Immatriculation</th><th>Telephone</th><th sec:authorize="hasRole('ROLE_ACCOUNTANT')" colspan="2">Actions</th>
 						                                       </tr>						                                       
 						                                    </thead>
 						                                    <tbody>
@@ -31,7 +32,7 @@
 						                                               <td th:text="${contractor.email}" style="font-size:16px;text-transform:none;" class="align-middle"></td>
 						                                               <td th:text="${contractor.taxPayerNumber}" class="align-middle"></td>
 						                                               <td th:text="${contractor.phoneNumber}" class="align-middle"></td>
-						                                               <td class="align-middle">
+						                                               <td class="align-middle"  sec:authorize="hasRole('ROLE_ACCOUNTANT')">
 						                                                   
 						                                                         <a class="btn btn-info text-align" th:href="@{/editContractor(id=${contractor.companyId},page=${currentPage})}">
 						                                                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">

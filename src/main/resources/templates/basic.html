@@ -2,6 +2,7 @@
 <html
      xmlns:th="http://www.thymeleaf.org" 
      xmlns:layout="http://www.ultraq.net.nz" lang="en"
+     xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
 >
 <head>
 <meta charset="utf-8"/>
@@ -21,7 +22,7 @@
                      <div>
                           <img src="pictures/ogive.png" class="img-responsive" alt="" id="logo">
                      </div>
-                     <div style="width:63%;">
+                     <div style="width:64%;">
                      <ul class="navbar-nav liens">
                           <li class="nav-item active dropdown">
                                <a class="nav-link nav-text-color" th:href="@{/index}">
@@ -38,7 +39,7 @@
                                    prestations
                                </a>
                           </li>
-                          <li class="nav-item active dropdown">
+                          <li class="nav-item active dropdown" sec:authorize="hasRole('ROLE_ACCOUNTANT')">
                                <a class="nav-link dropdown-toggle nav-text-color" href="#" data-bs-toggle="dropdown"  role="button"  >
                                    factures
                                </a>
@@ -51,14 +52,25 @@
                                        </li>
                                 </ul>
                           </li>
-                          <li class="nav-item active dropdown">
-                               <a class="nav-link dropdown-toggle nav-text-color" th:href="@{/listUsers}" data-bs-toggle="dropdown"  role="button"  >
+                          <li class="nav-item active dropdown" sec:authorize="hasRole('ROLE_SUPER')">
+                               <a class="nav-link dropdown-toggle nav-text-color" href="#" data-bs-toggle="dropdown"  role="button"  >
                                    utilisateurs
                                </a>
+                               <ul class="dropdown-menu sous-liens">
+                                       <li>
+                                           <a class="dropdown-item" th:href="@{/listUsers}">Liste des utilisateurs</a>
+                                       </li>
+                                       <li>
+                                           <a class="dropdown-item" th:href="@{/newUser}">creer un utilisateur</a>
+                                       </li>
+                                       <li>
+                                           <a class="dropdown-item" th:href="@{/newRole}">ajouter un role</a>
+                                       </li>
+                                </ul>
                           </li>
-                          <li class="nav-item dropdown">
+                          <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                              <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"  role="button">
-                                 <!-- <span sec:authentication="name"></span> -->
+                                 <span sec:authentication="name"></span>
                              </a>
                                <ul class="dropdown-menu sous-liens">
                                    <li>
