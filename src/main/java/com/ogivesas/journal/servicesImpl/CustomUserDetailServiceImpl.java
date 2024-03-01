@@ -3,6 +3,8 @@ package com.ogivesas.journal.servicesImpl;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,5 +95,13 @@ public class CustomUserDetailServiceImpl implements CustomUserDetailService{
 		// TODO Auto-generated method stub
 		return appRoleRepo.findAll();
 	}
+
+	@Override
+	public List<AppUser> listUsers() {
+		// TODO Auto-generated method stub
+		return appUserRepo.findAll();
+	}
+
+	
 
 }

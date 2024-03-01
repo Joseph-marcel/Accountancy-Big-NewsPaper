@@ -370,4 +370,24 @@ public class JournalController {
 		return "redirect:/newRole";
 	}
 	
+	
+	@GetMapping("/listUsers")
+	public String listUsers(Model model,
+			@RequestParam(name = "page", defaultValue = "0")int page,
+			@RequestParam(name = "size", defaultValue = "6")int size) {
+
+		
+		try {
+			  
+			List<AppUser> users = customUserDetailService.listUsers();
+			model.addAttribute("users", users);
+			
+		}catch (Exception e) {
+			
+			model.addAttribute("exception",e);
+		}
+		
+		return "listUsers";
+	}
+	
 }

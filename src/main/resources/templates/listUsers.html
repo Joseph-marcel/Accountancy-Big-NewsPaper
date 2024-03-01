@@ -2,6 +2,7 @@
 <html
      xmlns:th="http://www.thymeleaf.org" 
      xmlns:layout="http://www.ultraq.net.nz" lang="en"
+     xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
      layout:decorate="basic"
 >
 <head>
@@ -12,7 +13,37 @@
         <div class="d-flex">
             <div class="col-md-10 offset-1">
                <div class="card bg-light mb-3 mt-1">
-                  <div class="card-heading bg-primary text-center text-white card-title"></div>
+                  <div class="card-heading bg-primary text-center text-white card-title">utilisateurs</div>
+                     <fieldset>
+                             <legend>gestion utilisateurs</legend>
+                             <table class="table table-bordered text-center sous-liens table-striped">
+                                    <thead style="background-color:#ebebeb;">
+                                         <tr class="header-footer-background-color text-white">
+                                             <th>Nom d'utilidateur</th><th>email</th><th>Status</th><th>Roles</th><th colspan="2">Actions</th>
+                                         </tr>
+						            </thead>
+						            <tbody>
+						                 <tr th:if="${users.empty}">
+						                      <td colspan="3">Aucun utilisateur trouvée...!!!</td>
+					                     </tr>
+					                     <tr th:each="user: ${users}">
+					                         <td th:text="${user.username}" class="align-middle"></td>
+					                         <td th:text="${user.email}" class="align-middle"></td>
+					                         <td th:text="${user.active}" class="align-middle"></td>
+					                         <td  class="align-middle">
+					                             <span th:each="role: ${user.roles}"  th:text="${role.role}" class="ms-2"></span>
+					                         </td>
+					                         <td class="align-middle">				                                                   
+                                                 <a class="btn btn-info text-align" th:href="@{/editUser(id=${user.userId})}">
+                                                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                                          <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                                                     </svg>
+                                                 </a>					                                                   					                                                   
+						                     </td>
+					                     </tr>
+                                    </tbody>
+                             </table>
+                     </fieldset>
                </div>
             </div>
         </div>

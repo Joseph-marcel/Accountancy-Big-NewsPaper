@@ -2,6 +2,8 @@ package com.ogivesas.journal.services;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import com.ogivesas.journal.configuration.userDetailsConfig.AppRole;
 import com.ogivesas.journal.configuration.userDetailsConfig.AppUser;
 
@@ -13,4 +15,6 @@ public interface CustomUserDetailService {
 	void removeRoleFromUser(String username,String role);
 	AppUser loadUserByUsername(String username);
 	List<AppRole> listRoles();
+	List<AppUser> listUsers();
+	
 }
