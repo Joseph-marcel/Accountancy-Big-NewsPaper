@@ -2,12 +2,14 @@ package com.ogivesas.journal.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -380,7 +382,12 @@ public class JournalController {
 		try {
 			  
 			List<AppUser> users = customUserDetailService.listUsers();
+			List<AppRole> roles = customUserDetailService.listRoles();
+			
+			              
+			 
 			model.addAttribute("users", users);
+			model.addAttribute("roles", roles);
 			
 		}catch (Exception e) {
 			
@@ -388,6 +395,42 @@ public class JournalController {
 		}
 		
 		return "listUsers";
+	}
+	
+	@GetMapping("/removeRoleFromUser")
+	public String removeRoleFromUser(Model model,
+			@RequestParam(name = "username") String username,
+			@RequestParam(name = "role") String role) {
+			
+		    try {
+		    	
+		    	 customUserDetailService.removeRoleFromUser(username, role);
+		    	
+		    }catch(Exception e) {
+		    	
+		    	model.addAttribute("exception",e);
+		    }
+		
+		return "redirect:/listUsers";
+	}
+	
+	
+	@GetMapping("/addRoleToUser")
+	public String addRoleToUser(Model model,
+			@RequestParam(name = "username") String username,
+			@RequestParam(name = "role") String role
+			) {
+		
+		try {
+	    	
+	    	 customUserDetailService.addRoleToUser(username, role);
+	    	
+	    }catch(Exception e) {
+	    	
+	    	model.addAttribute("exception",e);
+	    }
+		
+		return "redirect:/listUsers";
 	}
 	
 }

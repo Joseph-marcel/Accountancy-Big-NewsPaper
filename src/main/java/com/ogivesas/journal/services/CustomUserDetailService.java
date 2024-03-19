@@ -1,9 +1,6 @@
 package com.ogivesas.journal.services;
 
 import java.util.List;
-
-import org.springframework.data.domain.Page;
-
 import com.ogivesas.journal.configuration.userDetailsConfig.AppRole;
 import com.ogivesas.journal.configuration.userDetailsConfig.AppUser;
 

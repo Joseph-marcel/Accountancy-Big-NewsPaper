@@ -71,5 +71,9 @@ fieldset, legend {
     box-sizing: border-box;
 }
 
+.modal-content{
+	width:75%;
+}
+
 
 

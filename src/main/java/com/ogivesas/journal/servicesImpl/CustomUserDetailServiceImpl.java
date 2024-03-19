@@ -2,13 +2,12 @@ package com.ogivesas.journal.servicesImpl;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.ogivesas.journal.configuration.userDetailsConfig.AppRole;
 import com.ogivesas.journal.configuration.userDetailsConfig.AppUser;
 import com.ogivesas.journal.repositories.AppRoleRepository;
@@ -69,6 +68,9 @@ public class CustomUserDetailServiceImpl implements CustomUserDetailService{
 		
 		AppUser appUser = loadUserByUsername(username);
 		AppRole appRole = appRoleRepo.findById(role).orElse(null);
+		List<AppRole> roles = listRoles().stream().filter(r -> r.getRole() == appRole.getRole()).collect(Collectors.toList());
+		
+		System.out.println(roles);
 		
 		appUser.getRoles().add(appRole);
 	}
@@ -80,6 +82,7 @@ public class CustomUserDetailServiceImpl implements CustomUserDetailService{
 		AppUser appUser = loadUserByUsername(username);
 		AppRole appRole = appRoleRepo.findById(role).get();
 		
+	    
 		appUser.getRoles().remove(appRole);
 	}
 

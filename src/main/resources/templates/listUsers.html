@@ -16,7 +16,7 @@
                   <div class="card-heading bg-primary text-center text-white card-title">utilisateurs</div>
                      <fieldset>
                              <legend>gestion utilisateurs</legend>
-                             <table class="table table-bordered text-center sous-liens table-striped">
+                             <table class="table table-bordered text-center  table-striped">
                                     <thead style="background-color:#ebebeb;">
                                          <tr class="header-footer-background-color text-white">
                                              <th>Nom d'utilidateur</th><th>email</th><th>Status</th><th>Roles</th><th colspan="2">gestion des roles</th>
@@ -26,7 +26,7 @@
 						                 <tr th:if="${users.empty}">
 						                      <td colspan="3">Aucun utilisateur trouvée...!!!</td>
 					                     </tr>
-					                     <tr th:each="user: ${users}">
+					                     <tr th:each="user : ${users}">
 					                         <td th:text="${user.username}" class="align-middle"></td>
 					                         <td th:text="${user.email}" class="align-middle"></td>
 					                         <td th:text="${user.active}" class="align-middle"></td>
@@ -35,32 +35,45 @@
 					                         </td>
 					                         <td  class="align-middle">				                                                   
                                                  <!-- Button trigger modal -->
-												<button type="button" class="btn btn-primary" data-toggle="modal" 
-												        th:attr="data-target='#exampleModalCenter'+${user.userId}">
+												<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+												        data-bs-target="#myModal"  th:attrappend="data-bs-target=${user.userId}">
 												  edit
 												</button> <!-- Modal -->
-										<div class="modal fade"
-											th:id="${'exampleModalCenter'+{user.userId}}" tabindex="-1"
-											role="dialog" aria-labelledby="exampleModalCenterTitle"
-											aria-hidden="true">
+										<div class="modal fade" id="myModal"  th:attrappend="id=${user.userId}"   tabindex="-1"
+											 role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 											<div class="modal-dialog modal-dialog-centered"
 												role="document">
 												<div class="modal-content">
 													<div class="modal-header">
-														<h5 class="modal-title" id="exampleModalCenterTitle">Modal
-															title</h5>
-														<button type="button" class="close" data-dismiss="modal"
+														<h3 class="modal-title" id="exampleModalCenterTitle">gestion des roles</h3>														
+														<button type="button" class="close" data-bs-dismiss="modal"
 															aria-label="Close">
 															<span aria-hidden="true">&times;</span>
 														</button>
 													</div>
-													<div class="modal-body">...</div>
-													<div class="modal-footer">
-														<button type="button" class="btn btn-secondary"
-															data-dismiss="modal">Close</button>
-														<button type="button" class="btn btn-primary">Save
-															changes</button>
+													<div class="modal-body">							
+														     <div class="col-md-12">
+																<fieldset style="background-color:#ebebeb;">
+																     <legend>retirer un role à  <span th:text=*{user.username}></span></legend>												     
+				                                                     <div class="form-group">
+				                                                     <div class="d-flex">
+					                                                     <a th:each="role:*{user.roles}" th:text="*{role.role}" class="btn btn-danger  ms-2" th:href="@{/removeRoleFromUser(username=${user.username},role=${role.role})}" role="button"></a>			
+				                                                     </div>
+				                                                     </div>
+																</fieldset>
+															</div>
+															<div class="col-md-12">
+																<fieldset style="background-color:#ebebeb;">
+																     <legend>ajouter un role à  <span th:text=*{user.username}></span></legend>
+																     <div class="form-group">
+																     <div class="d-flex">
+					                                                     <a th:each="role:*{roles}" th:text="*{role.role}" class="btn btn-danger  ms-2" th:href="@{/addRoleToUser(username=${user.username},role=${role.role})}" role="button"></a>	
+					                                                 </div>		
+				                                                     </div>			                                                     
+																</fieldset>
+															</div>
 													</div>
+													
 												</div>
 											</div>
 										</div>
