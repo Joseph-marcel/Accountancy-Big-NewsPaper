@@ -70,11 +70,11 @@
                           </li>
                           <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                              <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"  role="button">
-                                 <span sec:authentication="name"></span>
+                                 <span sec:authentication="name"></span>         
                              </a>
                                <ul class="dropdown-menu sous-liens">
                                    <li>
-                                       <a class="dropdown-item" th:href="@{/profile}">profile</a>
+                                       <a class="dropdown-item" th:href="@{/profile}">profil</a>
                                    </li>
                                    <li>
                                        <a class="dropdown-item" th:href="@{/login?logout}">Logout</a>
@@ -103,7 +103,8 @@
     <script th:src="@{/webjars/jquery/3.6.3/dist/jquery.min.js}"/></script> 
     <script type="text/javascript">
 	    $(function(){
-	       $("#myModal").modal('show');
+	      
+	       
 	    });
     </script>
 </body>

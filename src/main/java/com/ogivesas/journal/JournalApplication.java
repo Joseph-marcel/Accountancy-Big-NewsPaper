@@ -41,19 +41,15 @@ public class JournalApplication implements CommandLineRunner{
 		 * iJournalService.addCustomer(cstm);
 		 */
 		 
-		/*
-		 * AppUser appUser = customUser.addNewUser("zambio", "1234",
-		 * "zambio13@gmail.com", "1234");
-		 */
 		
 		/*
-		 * AppRole appRole = customUser.addNewRole("SUPER");
-		 * customUser.addRoleToUser("zambio", "SUPER");
+		 * AppUser appUser = customUser.addNewUser("zambio1", "12345",
+		 * "zambio1@gmail.com", "12345");
 		 */
-		/*
-		 * AppRole accountant = customUser.addNewRole("ACCOUNTANT");
-		 * customUser.addRoleToUser("zambio", "ACCOUNTANT");
-		 */
+		 
+		/* customUser.addRoleToUser("zambio1", "SUPER"); */
+		 
+		 
 	}
 
 	

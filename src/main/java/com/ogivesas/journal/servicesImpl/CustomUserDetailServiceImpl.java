@@ -2,9 +2,7 @@ package com.ogivesas.journal.servicesImpl;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,11 +66,11 @@ public class CustomUserDetailServiceImpl implements CustomUserDetailService{
 		
 		AppUser appUser = loadUserByUsername(username);
 		AppRole appRole = appRoleRepo.findById(role).orElse(null);
-		List<AppRole> roles = listRoles().stream().filter(r -> r.getRole() == appRole.getRole()).collect(Collectors.toList());
+		String[] roles = appUser.getRoles().stream().map(u -> u.getRole()).toArray(String[]::new);
 		
-		System.out.println(roles);
 		
 		appUser.getRoles().add(appRole);
+		
 	}
 
 	@Override
@@ -105,6 +103,23 @@ public class CustomUserDetailServiceImpl implements CustomUserDetailService{
 		return appUserRepo.findAll();
 	}
 
+	
+	
+	@Override
+	public AppUser updateUser(AppUser appUser) {
+		// TODO Auto-generated method stub
+		
+		AppUser savedAppUser = loadUserByUsername(appUser.getUsername());
+		
+		if(!appUser.getPassword().equals(appUser.getConfirmPassword())) throw new RuntimeException("Password does not match");
+		savedAppUser.setUsername(appUser.getUsername());
+		savedAppUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
+		
+	
+		return savedAppUser;
+	}
+
+	
 	
 
 }

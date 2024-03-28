@@ -2,18 +2,17 @@ package com.ogivesas.journal.controller;
 
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import com.ogivesas.journal.configuration.userDetailsConfig.AppRole;
 import com.ogivesas.journal.configuration.userDetailsConfig.AppUser;
 import com.ogivesas.journal.models.Allowance;
@@ -23,6 +22,9 @@ import com.ogivesas.journal.models.Director;
 import com.ogivesas.journal.models.Invoice;
 import com.ogivesas.journal.services.CustomUserDetailService;
 import com.ogivesas.journal.services.JournalService;
+import com.ogivesas.journal.servicesImpl.CustomUserDetailServiceImpl;
+import com.ogivesas.journal.servicesImpl.UserDetailServiceImpl;
+
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
@@ -33,6 +35,7 @@ public class JournalController {
 
 	private JournalService iJournalService;
 	private CustomUserDetailService customUserDetailService;
+	private CustomUserDetailServiceImpl   appRoleServiceImpl;
 
 	
 	//Controller Invoice methods
@@ -384,8 +387,7 @@ public class JournalController {
 			List<AppUser> users = customUserDetailService.listUsers();
 			List<AppRole> roles = customUserDetailService.listRoles();
 			
-			              
-			 
+			
 			model.addAttribute("users", users);
 			model.addAttribute("roles", roles);
 			
@@ -396,6 +398,7 @@ public class JournalController {
 		
 		return "listUsers";
 	}
+	
 	
 	@GetMapping("/removeRoleFromUser")
 	public String removeRoleFromUser(Model model,
@@ -423,7 +426,7 @@ public class JournalController {
 		
 		try {
 	    	
-	    	 customUserDetailService.addRoleToUser(username, role);
+	    	   customUserDetailService.addRoleToUser(username, role);
 	    	
 	    }catch(Exception e) {
 	    	
@@ -432,5 +435,27 @@ public class JournalController {
 		
 		return "redirect:/listUsers";
 	}
+	
+	
+	
+	  @GetMapping("/profile") 
+	  public String profile(Model model) {
+	  
+	       Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	       AppUser appUser = appRoleServiceImpl.loadUserByUsername(auth.getName());
+	       model.addAttribute("user", appUser);
+	  
+	     return "profile"; 
+	  }
+	  
+	  
+	  @PostMapping("/updateProfile")
+	  public String updateProfile(AppUser appUser) {
+		  
+		  AppUser updateAppUser = customUserDetailService.updateUser(appUser);
+		  
+		  return"redirect:/login";
+	  }
+	 
 	
 }
