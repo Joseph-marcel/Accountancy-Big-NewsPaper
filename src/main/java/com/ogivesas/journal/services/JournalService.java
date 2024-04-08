@@ -2,7 +2,6 @@ package com.ogivesas.journal.services;
 
 import java.util.Date;
 import java.util.List;
-
 import org.springframework.data.domain.Page;
 import com.ogivesas.journal.models.Allowance;
 import com.ogivesas.journal.models.Contractor;
@@ -39,12 +38,12 @@ public interface JournalService {
 	
 	
 	//CRUD entity Invoice
-	public void newInvoice(Invoice invoice);
+	public Invoice newInvoice(Invoice invoice);
 	public Page<Invoice> listInvoices(int page,int size);
 	public Page<Invoice> listInvoicesPerSearchDate(Date createAt,int page,int size);
 	public Invoice getInvoiceByInvoiceId(String id);
-	public void updateInvoice(Invoice invoice);
-	public void saveInvoice(Invoice invoice);
+	public Invoice updateInvoice(Invoice invoice);
+	public Invoice saveInvoice(Invoice invoice);
 	public void deleteInvoice(String id);
 	public Page<Invoice> monthlyInvoices(Date startDate, Date endDate,int page,int size);
 	public List<Invoice> invoicesPerMonth(Date startDate, Date endDate);

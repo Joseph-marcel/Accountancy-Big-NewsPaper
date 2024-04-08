@@ -34,7 +34,7 @@
 							                                  <label for="name"  class="form-label">Raison Sociale:</label>
 							                              </div>
 							                              <div class="form-input-margin-right">
-							                                  <input type="text" class="form-control" id="name" name="contractor.name" th:value="${invoice.contractor.name}"/>							                               
+							                                  <input type="text" class="form-control" id="name" name="contractor.name" th:value="${invoice.contractor.name}" required/>							                               
 	                                                            <small id="nameHelp" class="form-text text-muted">Nom du prestataire</small>                                       
 							                              </div>
 							                             </div>
@@ -66,7 +66,7 @@
 							                                  <label for="allowanceName"  class="form-label">Nature Prestation:</label>
 							                              </div>
 							                              <div class="form-input-margin-right">
-							                                  <input type="text" class="form-control" id="allowanceName" name="allowance.allowanceName" th:value="${invoice.allowance.allowanceName}"/>					                                        
+							                                  <input type="text" class="form-control" id="allowanceName" name="allowance.allowanceName" th:value="${invoice.allowance.allowanceName}" required/>					                                        
 	                                                          <small id="allowanceNameHelp" class="form-text text-muted">Nature de la prestation</small>
 							                              </div>
 							                              <div class="form-input-margin-right">

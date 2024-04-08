@@ -66,7 +66,6 @@ public class CustomUserDetailServiceImpl implements CustomUserDetailService{
 		
 		AppUser appUser = loadUserByUsername(username);
 		AppRole appRole = appRoleRepo.findById(role).orElse(null);
-		String[] roles = appUser.getRoles().stream().map(u -> u.getRole()).toArray(String[]::new);
 		
 		
 		appUser.getRoles().add(appRole);

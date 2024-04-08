@@ -25,9 +25,9 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class JournalServiceImpl implements JournalService{
 	
-	public  AllowanceRepository allowanceRepo;
-	public  CompanyRepository   companyRepo;
-	public  InvoiceRepository   invoiceRepo;
+	private  AllowanceRepository allowanceRepo;
+	private  CompanyRepository   companyRepo;
+	private  InvoiceRepository   invoiceRepo;
 
 	
 	
@@ -124,6 +124,18 @@ public class JournalServiceImpl implements JournalService{
 	
 	
 	@Override
+	public void updateAllowance(Allowance allowance) {
+		// TODO Auto-generated method stub
+		
+		Allowance savedAllowance = this.getAllowanceById(allowance.getAllowanceId());
+		          savedAllowance.setAllowanceName(allowance.getAllowanceName());
+		          savedAllowance.setCustomer(allowance.getCustomer());
+		          
+		allowanceRepo.save(savedAllowance);
+	}
+	
+	
+	@Override
 	public Page<Allowance> listAllowances(int page, int size) {
 		// TODO Auto-generated method stub
 		
@@ -148,7 +160,7 @@ public class JournalServiceImpl implements JournalService{
 	
 	//CRUD entity Invoice
 	@Override
-	public void newInvoice(Invoice invoice) {
+	public Invoice newInvoice(Invoice invoice) {
 		// TODO Auto-generated method stub
 		
 		  Contractor contractor = this.getCompanyByName(invoice.getContractor().getName());
@@ -177,7 +189,7 @@ public class JournalServiceImpl implements JournalService{
 					  .build();
 						
 						
-						  invoiceRepo.save(invoice);
+						return  invoiceRepo.save(invoice);
 	}
 
 	
@@ -217,7 +229,7 @@ public class JournalServiceImpl implements JournalService{
 	
 	
 	@Override
-	public void updateInvoice(Invoice invoice) {
+	public Invoice updateInvoice(Invoice invoice) {
 		// TODO Auto-generated method stub
 		
 		 Invoice savedInvoice = this.getInvoiceByInvoiceId(invoice.getInvoiceId());
@@ -225,19 +237,19 @@ public class JournalServiceImpl implements JournalService{
 		 savedInvoice.setCreateAt(invoice.getCreateAt());
 		 savedInvoice.setAmount(invoice.getAmount());
 		 
-		 invoiceRepo.save(savedInvoice);
+		return  invoiceRepo.save(savedInvoice);
 	}
 
 	
 	
 	@Override
-	public void saveInvoice(Invoice invoice) {
+	public Invoice saveInvoice(Invoice invoice) {
 		// TODO Auto-generated method stub
 		
 		if(invoice.getInvoiceId() != null) {
-			this.updateInvoice(invoice);
+			return this.updateInvoice(invoice);
 		}else {
-			this.newInvoice(invoice);
+			return this.newInvoice(invoice);
 		}
 		
 	}
@@ -251,17 +263,6 @@ public class JournalServiceImpl implements JournalService{
 		 invoiceRepo.deleteById(id);  
 	}
 
-
-	@Override
-	public void updateAllowance(Allowance allowance) {
-		// TODO Auto-generated method stub
-		
-		Allowance savedAllowance = this.getAllowanceById(allowance.getAllowanceId());
-		          savedAllowance.setAllowanceName(allowance.getAllowanceName());
-		          savedAllowance.setCustomer(allowance.getCustomer());
-		          
-		allowanceRepo.save(savedAllowance);
-	}
 
 
 	@Override

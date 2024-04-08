@@ -13,7 +13,7 @@ import com.ogivesas.journal.models.Contractor;
 
 public interface CompanyRepository extends JpaRepository<Company, Long>{
 
-	@Query(value="SELECT * FROM Company c WHERE c.type = :type ORDER BY c.name DESC", nativeQuery = true)
+	@Query(value="SELECT * FROM Company c WHERE c.type = :type ORDER BY c.name ASC", nativeQuery = true)
 	public Page<Contractor> listContractors(@Param("type") String type,PageRequest pageRequest);
 
 	public Company findByName(String name);

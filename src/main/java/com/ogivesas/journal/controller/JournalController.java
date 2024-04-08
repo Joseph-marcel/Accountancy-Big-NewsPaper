@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,8 +22,6 @@ import com.ogivesas.journal.models.Invoice;
 import com.ogivesas.journal.services.CustomUserDetailService;
 import com.ogivesas.journal.services.JournalService;
 import com.ogivesas.journal.servicesImpl.CustomUserDetailServiceImpl;
-import com.ogivesas.journal.servicesImpl.UserDetailServiceImpl;
-
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
@@ -44,7 +41,7 @@ public class JournalController {
 	public String index(Model model,
 			@RequestParam(name = "createAt", defaultValue = "")@DateTimeFormat(pattern = "yyyy-MM-dd") Date createAt,
 			@RequestParam(name = "page", defaultValue = "0")int page,
-			@RequestParam(name = "size", defaultValue = "10")int size) {
+			@RequestParam(name = "size", defaultValue = "20")int size) {
 		    
 		    
 		try {
@@ -107,9 +104,12 @@ public class JournalController {
 		  return "formInvoice"; 
 		  }
 		  
-		  String message ="Enregistrement réussi...!!!";
-		  iJournalService.saveInvoice(invoice);
-		  model.addAttribute("message", message);
+		Invoice savedInvoice =  iJournalService.saveInvoice(invoice);
+		if(savedInvoice != null) {
+			String message ="Nouvelle facture enregistrée...!!!";
+			model.addAttribute("message", message);
+		}
+		  
 		 
 		return "redirect:/index";
 	}
@@ -139,18 +139,21 @@ public class JournalController {
 	
 	
 	@PostMapping("/updateInvoice")
-	public String updateInvoice(@RequestParam(defaultValue = "0")int page,
+	public String updateInvoice(Model model,@RequestParam(defaultValue = "0")int page,
 			Invoice invoice) {
 		
 		Invoice savedInvoice = iJournalService.getInvoiceByInvoiceId(invoice.getInvoiceId());
 		
+		savedInvoice.setInvoiceNumber(invoice.getInvoiceNumber());
+		savedInvoice.setCreateAt(invoice.getCreateAt());
+		savedInvoice.setAmount(invoice.getAmount());
 		
-		  savedInvoice.setInvoiceNumber(invoice.getInvoiceNumber());
-		  savedInvoice.setCreateAt(invoice.getCreateAt());
-		  savedInvoice.setAmount(invoice.getAmount());
-		 
-		
-		iJournalService.saveInvoice(savedInvoice);
+		Invoice updatedInvoice = iJournalService.saveInvoice(savedInvoice);
+		if(updatedInvoice != null) {
+			 
+			String message = "Facture mise à jour";
+			model.addAttribute("message", message);
+		}
 		
 		return "redirect:/index?page="+page;
 	}
@@ -170,7 +173,7 @@ public class JournalController {
 			@RequestParam(name = "startDate", defaultValue = "")@DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
 			@RequestParam(name = "endDate", defaultValue = "")@DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
 			@RequestParam(defaultValue = "0")int page,
-			@RequestParam(defaultValue = "10")int size) {
+			@RequestParam(defaultValue = "20")int size) {
 		
 		    model.addAttribute("startDate", startDate);
 		    model.addAttribute("endDate", endDate);
@@ -218,7 +221,7 @@ public class JournalController {
 	@GetMapping("/prestataires")
 	public String prestataires(Model model,String type,
 			@RequestParam(name = "page", defaultValue = "0")int page,
-			@RequestParam(name = "size", defaultValue = "10")int size) {
+			@RequestParam(name = "size", defaultValue = "20")int size) {
 		
 		try {
 			  
@@ -276,7 +279,7 @@ public class JournalController {
 	@GetMapping("/prestations")
 	public String prestations(Model model,
 			@RequestParam(name = "page", defaultValue = "0")int page,
-			@RequestParam(name = "size", defaultValue = "10")int size) {
+			@RequestParam(name = "size", defaultValue = "20")int size) {
 		
 		try {
 			  

@@ -24,7 +24,7 @@
 					                                  <label for="username"  class="form-label">Nom d'utilisateur:</label>
 					                              </div>
 					                              <div class="form-input-margin-right">
-					                                  <input type="text" class="form-control" id="username" name="username" th:value="${appUser.username}"/>							                                                                                      
+					                                  <input type="text" class="form-control" id="username" name="username" th:value="${appUser.username}" required/>							                                                                                      
 	                                                     <small><span class="text-danger"  th:errors="${appUser.username}"></span></small>                            
 					                              </div>						                              
 							                 </div>
@@ -33,7 +33,7 @@
 					                                  <label for="email"  class="form-label">Email:</label>
 					                              </div>
 					                              <div class="form-input-margin-right">
-					                                  <input type="email" class="form-control" id="email" name="email" th:value="${appUser.email}"/>							                                    	                                                     
+					                                  <input type="email" class="form-control" id="email" name="email" th:value="${appUser.email}" required/>							                                    	                                                     
 	                                                     <small><span class="text-danger"  th:errors="${appUser.email}"></span></small>                            
 					                              </div>						                              
 							                 </div>
@@ -42,7 +42,7 @@
 					                                  <label for="password"  class="form-label">Mot de passe:</label>
 					                              </div>
 					                              <div class="form-input-margin-right">
-					                                  <input type="password" class="form-control" id="password" name="password" th:value="${appUser.password}"/>							                                    	                                                     
+					                                  <input type="password" class="form-control" id="password" name="password" th:value="${appUser.password}" required/>							                                    	                                                     
 	                                                     <small><span class="text-danger"  th:errors="${appUser.password}"></span></small>                            
 					                              </div>						                              
 							                 </div>
@@ -51,7 +51,7 @@
 					                                  <label for="confirmPassword"  class="form-label">Confirmer le mot de passe:</label>
 					                              </div>
 					                              <div class="form-input-margin-right">
-					                                  <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" th:value="${appUser.confirmPassword}"/>							                                    	                                                     
+					                                  <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" th:value="${appUser.confirmPassword}" required/>							                                    	                                                     
 	                                                     <small><span class="text-danger"  th:errors="${appUser.confirmPassword}"></span></small>                            
 					                              </div>						                              
 							                 </div>
