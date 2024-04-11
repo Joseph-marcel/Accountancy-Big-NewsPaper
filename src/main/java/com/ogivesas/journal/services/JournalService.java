@@ -15,7 +15,7 @@ public interface JournalService {
 	public Contractor getCompanyByName(String name);
 	public Page<Contractor> listContractors(String type,int page,int size);
 	public Contractor  getCompanyById(Long id);
-	public void updateContractor(Contractor contractor);
+	public Contractor updateContractor(Contractor contractor);
 	
 	
 	
@@ -25,7 +25,7 @@ public interface JournalService {
 	public Allowance getAllowanceByAllowanceName(String name);
 	public Allowance getAllowanceById(Long id);
 	public Page<Allowance> listAllowances(int page,int size);
-	public void updateAllowance(Allowance allowance);
+	public Allowance updateAllowance(Allowance allowance);
 	
 	
 	

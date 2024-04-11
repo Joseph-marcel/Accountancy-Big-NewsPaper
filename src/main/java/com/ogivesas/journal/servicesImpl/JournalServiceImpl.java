@@ -51,8 +51,11 @@ public class JournalServiceImpl implements JournalService{
 	public Contractor getCompanyByName(String name) {
 		// TODO Auto-generated method stub
 		
+		Contractor contractor = (Contractor)companyRepo.findByName(name);
 		
-		return  (Contractor)companyRepo.findByName(name);
+		if(contractor == null) throw new RuntimeException("Ce prestataire n'existe pas.");
+		
+		return  contractor;
 	}
 	
 	
@@ -60,7 +63,11 @@ public class JournalServiceImpl implements JournalService{
 	public Contractor getCompanyById(Long id) {
 		// TODO Auto-generated method stub
 		
-		return (Contractor)companyRepo.findById(id).orElse(null);
+		Contractor contractor = (Contractor)companyRepo.findById(id).orElse(null);
+		
+		if(contractor == null) throw new RuntimeException("Ce prestataire n'existe pas.");
+			
+		return contractor;
 	}
 
 	
@@ -73,7 +80,7 @@ public class JournalServiceImpl implements JournalService{
 	
 	
 	@Override
-	public void updateContractor(Contractor contractor) {
+	public Contractor updateContractor(Contractor contractor) {
 		// TODO Auto-generated method stub
 		
 		Contractor savedContractor = this.getCompanyById(contractor.getCompanyId());
@@ -82,7 +89,7 @@ public class JournalServiceImpl implements JournalService{
 		           savedContractor.setEmail(contractor.getEmail());
 		           savedContractor.setPhoneNumber(contractor.getPhoneNumber());
 		           
-		           companyRepo.save(savedContractor);
+		return   companyRepo.save(savedContractor);
 	}
 
 
@@ -107,9 +114,13 @@ public class JournalServiceImpl implements JournalService{
 	public Allowance getAllowanceByAllowanceName(String name) {
 		// TODO Auto-generated method stub
 		
+		Allowance allowance = allowanceRepo.findByAllowanceName(name);
 		
-		return allowanceRepo.findByAllowanceName(name);
+		if(allowance == null) throw new RuntimeException("Cette prestation n'existe pas.");
+		
+		return allowance;
 	}
+	
 
 	@Override
 	public Allowance getAllowanceById(Long id) {
@@ -124,14 +135,14 @@ public class JournalServiceImpl implements JournalService{
 	
 	
 	@Override
-	public void updateAllowance(Allowance allowance) {
+	public Allowance updateAllowance(Allowance allowance) {
 		// TODO Auto-generated method stub
 		
 		Allowance savedAllowance = this.getAllowanceById(allowance.getAllowanceId());
 		          savedAllowance.setAllowanceName(allowance.getAllowanceName());
 		          savedAllowance.setCustomer(allowance.getCustomer());
 		          
-		allowanceRepo.save(savedAllowance);
+		return allowanceRepo.save(savedAllowance);
 	}
 	
 	

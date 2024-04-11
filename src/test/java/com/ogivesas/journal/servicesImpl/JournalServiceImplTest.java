@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -12,11 +11,8 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -26,6 +22,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import com.ogivesas.journal.models.Allowance;
 import com.ogivesas.journal.models.Contractor;
+import com.ogivesas.journal.models.Customer;
 import com.ogivesas.journal.models.Director;
 import com.ogivesas.journal.models.Invoice;
 import com.ogivesas.journal.repositories.AllowanceRepository;
@@ -58,24 +55,6 @@ class JournalServiceImplTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testListInvoiceOk() throws ParseException{
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); String
-		  text="2024-04-03"; Date date = format.parse(text);
-		  Contractor contractor = new Contractor();
-		  contractor.setName("Orange");
-		  Allowance allowance = new Allowance(); allowance.setAllowanceName("Frais");
-		  
-		List<Invoice> invoices1 = List.of(
-				Director.invoiceBuilder()
-				.invoiceId("o1236588")
-				.invoiceNumber("4lkkdudd")
-				.createAt(date)
-				.contractor(contractor)
-				.allowance(allowance)
-				.build()
-				);
-		
-		//Mockito.when(invoiceRepo.listInvoices(PageRequest.of(1, 6))).thenReturn(invoices.stream().map(i -> {
-			//Page<Invoice>
 		
 		var invoices = mock(Page.class);
         when(invoiceRepo.listInvoices(any(PageRequest.class))).thenReturn(invoices);
@@ -199,5 +178,158 @@ class JournalServiceImplTest {
 		verify(companyRepo, times(1)).findByName(name);
 	}
 	
-
+	
+	@Test
+	public void shouldUpdateAllowance() {
+		
+		Customer customer = Director.customerBuilder()
+				.name("OGIVE SAS")
+				.companyId(1L)
+				.taxPayerNumber("M091612571014S")
+				.email("siogivesas@gmail.com")
+				.phoneNumber("(+237) 694 674 286 / 694467 982")
+				.build();
+		
+		Allowance allowance = Director.allowanceBuilder()
+				.allowanceId(1L)
+				.allowanceName("Updated name")
+				.customer(customer)
+				.build();
+		
+		Allowance savedAllowance = Director.allowanceBuilder()
+				.allowanceName("fournitures")
+				.build();
+		
+		when(allowanceRepo.findById(anyLong())).thenReturn(Optional.ofNullable(savedAllowance));
+		when(allowanceRepo.save(savedAllowance)).thenReturn(savedAllowance);
+		
+		Allowance updatedAllowance = journalServiceImpl.updateAllowance(allowance);
+		
+		assertEquals(savedAllowance.getAllowanceName(), updatedAllowance.getAllowanceName());
+		
+	}
+	
+	
+	@Test
+	public void shouldUpdateContractor() {
+		
+		Contractor contractor = Director.contractorBuilder()
+				.companyId(2L)
+				.name("Alex Copys")
+				.email("nfcBank@hotmail.fr")
+				.taxPayerNumber("M079100006355X")
+				.build();
+		    
+		Contractor savedContractor = Director.contractorBuilder()
+				.name("Alex Copy")
+				.build();
+		
+		when(companyRepo.findById(anyLong())).thenReturn(Optional.ofNullable(savedContractor));
+		when(companyRepo.save(savedContractor)).thenReturn(savedContractor);
+		
+		Contractor updatedContractor = journalServiceImpl.updateContractor(contractor);
+		
+		assertEquals(savedContractor.getName(), updatedContractor.getName());
+	}
+	
+	
+	  @SuppressWarnings("unused")
+	@Test 
+	  public void shouldSaveAllowance() throws ParseException {
+	  
+		  SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); 
+		  String  text="2024-04-03"; 
+		  Date date = format.parse(text);
+		  
+		  Customer customer = Director.customerBuilder()
+				                      .name("OGIVE SAS")
+		                              .companyId(1L) 
+		                              .taxPayerNumber("M091612571014S")
+		                              .email("siogivesas@gmail.com")
+		                              .phoneNumber("(+237) 694 674 286 / 694467 982")
+		                              .build();
+	  
+		  Allowance allowance = Director.allowanceBuilder()
+		                                .allowanceName("Entretien vehicule") 
+		                                .customer(customer)
+		                                .build();
+		  
+		  Contractor contractor = Director.contractorBuilder()
+				                          .name("Garage DG")
+				                          .taxPayerNumber("M079100006357Y")
+				                          .email("dg@caramail.com")
+				                          .build();
+		  
+		  Invoice invoice = Director.invoiceBuilder()
+				                    .invoiceNumber("dg-0154")
+				                    .amount(25000)
+				                    .createAt(date)
+				                    .allowance(allowance)
+				                    .contractor(contractor)
+				                    .build();
+		  
+		  Allowance savedAllowance = Director.allowanceBuilder()
+				                             .allowanceId(2L)
+				                             .allowanceName("Entretien vehicule")
+				                             .customer(customer)
+				                             .build();
+		  
+		  Allowance newAllowance = journalServiceImpl.addAllowance(invoice);
+		  
+		  verify(allowanceRepo, times(1)).save(any());
+	  
+	  }
+	  
+	  
+	  
+	@SuppressWarnings("unused")
+	@Test
+	  public void shouldSaveContractor() throws ParseException {
+		  
+		  SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); 
+		  String  text="2024-04-05"; 
+		  Date date = format.parse(text);
+		  
+		  Customer customer = Director.customerBuilder()
+				                      .name("OGIVE SAS")
+		                              .companyId(1L) 
+		                              .taxPayerNumber("M091612571014S")
+		                              .email("siogivesas@gmail.com")
+		                              .phoneNumber("(+237) 694 674 286 / 694467 982")
+		                              .build();
+	  
+		  Allowance allowance = Director.allowanceBuilder()
+		                                .allowanceName("Entretien vehicule") 
+		                                .customer(customer)
+		                                .build();
+		  
+		  Contractor contractor = Director.contractorBuilder()
+				                          .name("Garage DG")
+				                          .taxPayerNumber("M079100006357Y")
+				                          .email("dg@caramail.com")
+				                          .build();
+		  
+		  Invoice invoice = Director.invoiceBuilder()
+				                    .invoiceNumber("dg-0154")
+				                    .amount(25000)
+				                    .createAt(date)
+				                    .allowance(allowance)
+				                    .contractor(contractor)
+				                    .build();
+		  
+		  Contractor savedContractor = Director.contractorBuilder()
+                                               .name("Garage DG")
+                                               .taxPayerNumber("M079100006357Y")
+                                               .email("dg@caramail.com")
+                                               .build();
+		  
+		  Contractor newContractor = journalServiceImpl.addCompany(invoice);
+		  
+		  verify(companyRepo, times(1)).save(any());
+		  
+	  }
+	 
+	
+	
+	
 }

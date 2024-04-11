@@ -18,7 +18,10 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class JournalApplication implements CommandLineRunner{
 
+	@SuppressWarnings("unused")
 	private JournalService iJournalService;
+	
+	@SuppressWarnings("unused")
 	private CustomUserDetailService  customUser;
 	
 	

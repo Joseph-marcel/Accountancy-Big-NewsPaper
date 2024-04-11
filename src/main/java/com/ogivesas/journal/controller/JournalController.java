@@ -348,7 +348,7 @@ public class JournalController {
 			return "newUser";
 		}
 		
-		AppUser savedAppUser = customUserDetailService.addNewUser(appUser.getUsername(), appUser.getPassword(), appUser.getEmail(), appUser.getConfirmPassword());
+	    customUserDetailService.addNewUser(appUser.getUsername(), appUser.getPassword(), appUser.getEmail(), appUser.getConfirmPassword());
 		
 		return "redirect:/listUsers";
 	}
@@ -373,7 +373,7 @@ public class JournalController {
 			return "newRole";
 		}
 		
-		AppRole savedAppRole = customUserDetailService.addNewRole(appRole.getRole());
+		 customUserDetailService.addNewRole(appRole.getRole());
 		
 		return "redirect:/newRole";
 	}
@@ -455,7 +455,7 @@ public class JournalController {
 	  @PostMapping("/updateProfile")
 	  public String updateProfile(AppUser appUser) {
 		  
-		  AppUser updateAppUser = customUserDetailService.updateUser(appUser);
+		 customUserDetailService.updateUser(appUser);
 		  
 		  return"redirect:/login";
 	  }
