@@ -18,8 +18,6 @@ public interface JournalService {
 	public Contractor updateContractor(Contractor contractor);
 	
 	
-	
-	
 	//CRUD entity Allowance
 	public Allowance addAllowance(Invoice invoice);
 	public Allowance getAllowanceByAllowanceName(String name);
@@ -28,13 +26,9 @@ public interface JournalService {
 	public Allowance updateAllowance(Allowance allowance);
 	
 	
-	
-	
 	//CRUD entity Customer
 	public void addCustomer(Customer ctsm);
 	public Customer getCustomerByName(String name);
-	
-	
 	
 	
 	//CRUD entity Invoice

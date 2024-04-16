@@ -234,7 +234,7 @@ class JournalServiceImplTest {
 	
 	
 	  @SuppressWarnings("unused")
-	@Test 
+	  @Test 
 	  public void shouldSaveAllowance() throws ParseException {
 	  
 		  SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); 
@@ -328,7 +328,201 @@ class JournalServiceImplTest {
 		  verify(companyRepo, times(1)).save(any());
 		  
 	  }
+	
+	
+	
+	@Test
+	public void allowanceByIdShouldThrowsNullPointerException() {
+		
+		Long id = 1L;
+		var exp = assertThrows(NullPointerException.class, () -> journalServiceImpl.getAllowanceById(id));
+		assertEquals("Cette prestation n'existe pas.", exp.getMessage());
+	}
+	
+	
+	
+	@Test
+	public void allowanceByNameShouldThrowsNullPointerException() {
+		
+		String name = "fournitures";
+		var exp = assertThrows(NullPointerException.class, () -> journalServiceImpl.getAllowanceByAllowanceName(name));
+		assertEquals("Cette prestation n'existe pas.", exp.getMessage());
+	}
+	
+	
+	@Test
+	public void contractorByIdShouldThrowsNullPointerException() {
+		
+		Long id = 1L;
+		var exp = assertThrows(NullPointerException.class, () -> journalServiceImpl.getCompanyById(id));
+		assertEquals("Ce prestataire n'existe pas.", exp.getMessage());
+	}
+	
+	
+	@Test 
+	public void contractorByNameShouldThrowsNullPointerException() {
+		
+		String name = "Alex Copy";
+		var exp = assertThrows(NullPointerException.class, () -> journalServiceImpl.getCompanyByName(name));
+		assertEquals("Ce prestataire n'existe pas.", exp.getMessage());
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testInvoicesPerSearchdate() throws ParseException {
+		
+		 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); 
+		 String  text="2024-04-05"; 
+		 Date date = format.parse(text);
+		 
+		 var invoices = mock(Page.class);
+		 
+		 when(invoiceRepo.listInvoicesPerSearchDate(any(Date.class), any(PageRequest.class))).thenReturn(invoices);
+		 
+		 journalServiceImpl.listInvoicesPerSearchDate(date, 1, 6);
+		 
+		 verify(invoiceRepo).listInvoicesPerSearchDate(any(Date.class), any(PageRequest.class));
+		 verifyNoMoreInteractions(invoiceRepo);
+	}
 	 
+	
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testInvoicesForPeriod() throws ParseException{
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); 
+		String  text1="2024-02-05"; 
+		String  text2="2024-04-05";
+		Date date1 = format.parse(text1);
+		Date date2 = format.parse(text2);
+		
+		var invoices = mock(Page.class);
+		
+		when(invoiceRepo.listInvoicesPerMonth(any(Date.class), any(Date.class), any(PageRequest.class))).thenReturn(invoices);
+		
+		journalServiceImpl.monthlyInvoices(date1, date2, 1, 6);
+		
+		verify(invoiceRepo).listInvoicesPerMonth(any(Date.class), any(Date.class), any(PageRequest.class));
+		verifyNoMoreInteractions(invoiceRepo);
+	}
+	
+	
+	
+	@Test
+	public void testSaveNewInvoiceWhenAllowanceAndContractorAlreadyExist() throws ParseException{
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); 
+		String  text="2024-04-05"; 
+		Date date = format.parse(text);
+		
+		Customer customer = Director.customerBuilder()
+                .name("OGIVE SAS")
+                .companyId(1L) 
+                .taxPayerNumber("M091612571014S")
+                .email("siogivesas@gmail.com")
+                .phoneNumber("(+237) 694 674 286 / 694467 982")
+                .build();
+
+		Allowance savedAllowance = Director.allowanceBuilder()
+				.allowanceId(1L)
+				.allowanceName("Entretien vehicule")
+				.customer(customer)
+				.build();
+		
+		
+		Contractor savedContractor = Director.contractorBuilder()
+				.companyId(1L)
+				.name("Garage DG")
+				.taxPayerNumber("M079100006357Y")
+				.email("dg@caramail.com")
+				.build();
+
+		Invoice invoice = Director.invoiceBuilder()
+				.invoiceNumber("dg-0154")
+				.amount(25000)
+				.createAt(date)
+				.allowance(savedAllowance)
+				.contractor(savedContractor)
+				.build();
+		
+		/*
+		 * Invoice savedInvoice = Director.invoiceBuilder()
+		 * .invoiceId("016fd164-c486-41cc-bc24-7cf998beee49") .invoiceNumber("dg-0154")
+		 * .amount(25000) .createAt(date) .allowance(allowance) .contractor(contractor)
+		 * .build();
+		 */
+		
+		when(allowanceRepo.findByAllowanceName(anyString())).thenReturn(savedAllowance);
+		when(companyRepo.findByName(anyString())).thenReturn(savedContractor);
+		
+		
+		journalServiceImpl.newInvoice(invoice);
+		
+		verify(invoiceRepo, times(1)).save(any());
+	}
+	
+	
+	
+	
+	@Test
+	public void testSaveNewInvoiceWhenAllowanceDoesNotExistButContractorExist() throws ParseException {
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); 
+		String  text="2024-04-05"; 
+		Date date = format.parse(text);
+		
+		Customer customer = Director.customerBuilder()
+                .name("OGIVE SAS")
+                .companyId(1L) 
+                .taxPayerNumber("M091612571014S")
+                .email("siogivesas@gmail.com")
+                .phoneNumber("(+237) 694 674 286 / 694467 982")
+                .build();
+		Allowance allowance = Director.allowanceBuilder()
+				.allowanceName("Entretien vehicule")
+				.customer(customer)
+				.build();
+		
+		Allowance savedAllowance = Director.allowanceBuilder()
+				.allowanceId(1L)
+				.allowanceName("Entretien vehicule")
+				.customer(customer)
+				.build();
+		
+		Contractor savedContractor = Director.contractorBuilder()
+				.companyId(1L)
+				.name("Garage DG")
+				.taxPayerNumber("M079100006357Y")
+				.email("dg@caramail.com")
+				.build();
+		
+		Invoice invoice = Director.invoiceBuilder()
+				.invoiceNumber("dg-0154")
+				.amount(25000)
+				.createAt(date)
+				.allowance(allowance)
+				.contractor(savedContractor)
+				.build();
+		
+		when(allowanceRepo.findByAllowanceName(anyString())).thenReturn(null);
+		when(allowanceRepo.save(allowance)).thenReturn(savedAllowance);
+		when(companyRepo.findByName(anyString())).thenReturn(savedContractor);
+		
+	    
+		journalServiceImpl.newInvoice(invoice);
+		
+		verify(invoiceRepo, times(1)).save(any());
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
