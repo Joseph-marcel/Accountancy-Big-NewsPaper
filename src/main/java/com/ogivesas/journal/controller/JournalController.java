@@ -50,8 +50,9 @@ public class JournalController {
 				
 				Page<Invoice> listInvoices = iJournalService.listInvoices(page, size);
 				model.addAttribute("invoices", listInvoices.getContent());
-				int[] pages = new int[listInvoices.getTotalPages()];
-				 model.addAttribute("pages", pages);
+				int[] pages = new int[listInvoices.getTotalPages()+1];
+				
+				model.addAttribute("pages", pages);
 				
 			 }else {
 				 

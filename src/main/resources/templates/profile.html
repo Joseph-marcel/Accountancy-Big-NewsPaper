@@ -11,7 +11,7 @@
       <div layout:fragment="content">
            <div class="col-md-10 offset-1">
                   <div class="card bg-light mb-3 mt-1">
-                        <div class="card-heading bg-primary text-center text-white card-title">Mise à jour du prestataire</div>
+                        <div class="card-heading bg-primary text-center text-white card-title"></div>
                         <div class="card-body">
                               <form th:action="@{/updateProfile}" method="post"  th:object="${user}"> 
                                   <fieldset class="form-group border p-3 mt-3 mb-2">
@@ -45,7 +45,7 @@
 						                                  <label for="password"  class="form-label">Nouveau mot de passe:</label>
 						                              </div>
 						                              <div class="form-input-margin-right">
-						                                  <input type="password" class="form-control" id="password"  th:field="*{password}" aria-describedby="nameHelp" placeholder="Type password"/>							                               
+						                                  <input type="password" class="form-control" id="password"  th:field="*{password}" aria-describedby="nameHelp" placeholder="Type password" required/>							                               
                                                             <small id="passwordHelp" class="form-text text-muted">Nouveau mot de passe</small>                                       
 						                              </div>
 						                             </div>					                             
@@ -54,7 +54,7 @@
 						                                  <label for="confirmPassword"  class="form-label">Confirmez le mot de passe</label>
 						                              </div>
 						                              <div class="form-input-margin-right">
-						                                  <input type="password" class="form-control" id="confirmPasswordInput"  th:field="*{confirmPassword}" aria-describedby="phoneNumberHelp" placeholder="Type phone number"/>						                                    
+						                                  <input type="password" class="form-control" id="confirmPasswordInput"  th:field="*{confirmPassword}" aria-describedby="phoneNumberHelp" placeholder="Type phone number" required/>						                                    
                                                             <small id="confirmPasswordHelp" class="form-text text-muted">Confirmez le mot de passe</small>	                                                                 
 						                              </div>
 						                             </div>

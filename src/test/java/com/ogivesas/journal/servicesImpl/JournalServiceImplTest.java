@@ -20,6 +20,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.ogivesas.journal.models.Allowance;
 import com.ogivesas.journal.models.Contractor;
 import com.ogivesas.journal.models.Customer;
@@ -502,17 +504,19 @@ class JournalServiceImplTest {
 				.invoiceNumber("dg-0154")
 				.amount(25000)
 				.createAt(date)
-				.allowance(allowance)
+				.allowance(savedAllowance)
 				.contractor(savedContractor)
 				.build();
 		
+		
 		when(allowanceRepo.findByAllowanceName(anyString())).thenReturn(null);
-		when(allowanceRepo.save(allowance)).thenReturn(savedAllowance);
 		when(companyRepo.findByName(anyString())).thenReturn(savedContractor);
+		journalServiceImpl.addAllowance(invoice);
 		
 	    
 		journalServiceImpl.newInvoice(invoice);
 		
+		verify(allowanceRepo, times(1)).save(any());
 		verify(invoiceRepo, times(1)).save(any());
 	}
 	

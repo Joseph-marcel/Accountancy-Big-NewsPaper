@@ -45,12 +45,17 @@ public class JournalApplication implements CommandLineRunner{
 		 */
 		 
 		
+		
+		
+		
 		/*
-		 * AppUser appUser = customUser.addNewUser("zambio1", "12345",
-		 * "zambio1@gmail.com", "12345");
+		 * AppUser appUser =
+		 * customUser.addNewUser("siogive","201710","siogivesas@gmail.com", "201710");
+		 * 
+		 * 
+		 * customUser.addRoleToUser("siogive", "SUPER");
 		 */
 		 
-		/* customUser.addRoleToUser("zambio1", "SUPER"); */
 		 
 		 
 	}
