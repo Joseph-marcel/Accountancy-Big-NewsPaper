@@ -1,5 +1,6 @@
 package com.ogivesas.journal.controller;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -8,10 +9,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.ogivesas.journal.configuration.userDetailsConfig.AppRole;
 import com.ogivesas.journal.configuration.userDetailsConfig.AppUser;
 import com.ogivesas.journal.models.Allowance;
@@ -19,11 +23,13 @@ import com.ogivesas.journal.models.Contractor;
 import com.ogivesas.journal.models.Customer;
 import com.ogivesas.journal.models.Director;
 import com.ogivesas.journal.models.Invoice;
+import com.ogivesas.journal.models.InvoiceDto;
 import com.ogivesas.journal.services.CustomUserDetailService;
 import com.ogivesas.journal.services.JournalService;
 import com.ogivesas.journal.servicesImpl.CustomUserDetailServiceImpl;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import utils.FileUpLoadUtil;
 
 
 @Controller
@@ -80,8 +86,8 @@ public class JournalController {
 	@GetMapping("/formInvoice")
 	public String register(Model model) {
 		
-		Invoice invoice = Director.invoiceBuilder()
-				.build();
+		
+	    Invoice invoice = Director.invoiceBuilder().build();
 		
 		Customer cstm = iJournalService.getCustomerByName("OGIVE SAS");
 		
@@ -97,7 +103,8 @@ public class JournalController {
 	@PostMapping("/createInvoice")
 	public String newInvoice(Model model,@Valid Invoice invoice,
 			BindingResult bindingResult,
-			@RequestParam(defaultValue="0")int page) {
+			@RequestParam(defaultValue="0")int page,
+			@RequestParam("image") MultipartFile multiPartFile) throws IOException {
 		
 		
 		  if(bindingResult.hasErrors()){
@@ -105,7 +112,17 @@ public class JournalController {
 		  return "formInvoice"; 
 		  }
 		  
+		  String fileName = StringUtils.cleanPath(multiPartFile.getOriginalFilename());
+		         Director.invoiceBuilder()
+		                 .imageFileName(fileName)
+		                 .build();
+		  
 		Invoice savedInvoice =  iJournalService.saveInvoice(invoice);
+		
+		String upLoadDir = "invoice-photos/" + savedInvoice.getInvoiceId();
+		       FileUpLoadUtil.saveFile(upLoadDir,fileName,multiPartFile);
+		       
+		       
 		if(savedInvoice != null) {
 			String message ="Nouvelle facture enregistrée...!!!";
 			model.addAttribute("message", message);
@@ -141,13 +158,20 @@ public class JournalController {
 	
 	@PostMapping("/updateInvoice")
 	public String updateInvoice(Model model,@RequestParam(defaultValue = "0")int page,
-			Invoice invoice) {
+			Invoice invoice,
+			@RequestParam("image")MultipartFile multiPartFile) {
 		
 		Invoice savedInvoice = iJournalService.getInvoiceByInvoiceId(invoice.getInvoiceId());
+		
+		String fileName = StringUtils.cleanPath(multiPartFile.getOriginalFilename());
+        Director.invoiceBuilder()
+                .imageFileName(fileName)
+                .build();
 		
 		savedInvoice.setInvoiceNumber(invoice.getInvoiceNumber());
 		savedInvoice.setCreateAt(invoice.getCreateAt());
 		savedInvoice.setAmount(invoice.getAmount());
+		savedInvoice.setImageFileName(invoice.getImageFileName());
 		
 		Invoice updatedInvoice = iJournalService.saveInvoice(savedInvoice);
 		if(updatedInvoice != null) {
@@ -161,9 +185,12 @@ public class JournalController {
 	
 	
 	@GetMapping("/deleteInvoice")
-	public String deleteInvoice(@RequestParam(defaultValue = "0")int page,@RequestParam(name = "id") String id) {
+	public String deleteInvoice(Model model,@RequestParam(defaultValue = "0")int page,@RequestParam(name = "id") String id) {
 		
 		iJournalService.deleteInvoice(id);
+		
+		String message = "Facture supprimée";
+		model.addAttribute("message", message);
 		
 		return "redirect:/index?page="+page;
 	}
@@ -265,9 +292,12 @@ public class JournalController {
 	
 	
 	@PostMapping("/updateContractor")
-	public String updateContractor(@RequestParam(defaultValue = "0")int page,Contractor contractor) {
+	public String updateContractor(Model model,@RequestParam(defaultValue = "0")int page,Contractor contractor) {
 		 
 		iJournalService.updateContractor(contractor); 
+		
+		String message = "Modification enregistrée...!!!";
+		model.addAttribute("message", message);
 		
 		return "redirect:/prestataires?page="+ page;
 	}
@@ -320,9 +350,12 @@ public class JournalController {
 	
 	
 	@PostMapping("/updateAllowance")
-	public String updateAllowance(@RequestParam(defaultValue = "0")int page,Allowance allowance) {
+	public String updateAllowance(Model model,@RequestParam(defaultValue = "0")int page,Allowance allowance) {
 		
 		 iJournalService.updateAllowance(allowance);
+		 
+		 String message = "Modification enregistrée...!!!";
+			    model.addAttribute("message", message);
 		 
 		 return "redirect:/prestations?page="+page;
 	}
@@ -350,6 +383,9 @@ public class JournalController {
 		}
 		
 	    customUserDetailService.addNewUser(appUser.getUsername(), appUser.getPassword(), appUser.getEmail(), appUser.getConfirmPassword());
+	    
+	    String message = "Nouvel utilisateur enregistré avec success...!!!";
+	    model.addAttribute("message", message);
 		
 		return "redirect:/listUsers";
 	}
@@ -375,6 +411,9 @@ public class JournalController {
 		}
 		
 		 customUserDetailService.addNewRole(appRole.getRole());
+		 
+		 String message = "Nouveau role enregistré avec success...!!!";
+		    model.addAttribute("message", message);
 		
 		return "redirect:/newRole";
 	}
@@ -417,6 +456,7 @@ public class JournalController {
 		    	
 		    	model.addAttribute("exception",e);
 		    }
+		    
 		
 		return "redirect:/listUsers";
 	}

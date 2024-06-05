@@ -2,27 +2,13 @@ package com.ogivesas.journal.models;
 
 
 import java.util.Date;
-
 import org.springframework.format.annotation.DateTimeFormat;
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.*;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.*;
+import lombok.*;
+
 
 
 @Entity
@@ -42,6 +28,15 @@ public class Invoice {
 	@Column(nullable = false)
 	@NotNull(message = "Champ obligatire")
 	private Integer amount;
+	@Column(nullable = true, length = 64)
+	private String imageFileName;
+	
+	@Transient
+	public String getImageFileNameImagePath() {
+		if(imageFileName == null) return null;
+	
+		return "/pictures/invoice-photos/" + invoiceId + "/" + imageFileName;
+	}
 	
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -84,6 +79,12 @@ public class Invoice {
 		public InvoiceBuilder amount(Integer amount) {
 			
 			invoice.amount = amount;
+			return this;
+		}
+		
+		public InvoiceBuilder imageFileName(String imageFileName) {
+			
+			invoice.imageFileName = imageFileName;
 			return this;
 		}
 		

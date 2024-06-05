@@ -12,7 +12,7 @@
                       <div class="d-flex">
                    <div class="col-md-10 offset-1">
                          <div class="card bg-light mb-3 mt-1">
-                               <div class="card-heading bg-primary text-center text-white card-title">Nouvelle facture</div>
+                               <div class="card-heading bg-primary text-center text-white card-title">facture</div>
                                <div class="card-body">
                                      <form th:action="@{/updateInvoice(page=${page})}" method="post"  th:object="${invoice}">                             
                                             <fieldset class="form-group border p-3 mt-3 mb-2">
@@ -77,7 +77,33 @@
 							                        </div>
 							                     </div>
                                             </fieldset>
+                                            <fieldset class="form-group border p-3 mt-3 mb-2">
+                                                <div class="row justify-content-center">
+							                       <div class="col-md-5">
+							                          <fieldset>
+							                            <legend>Piece Comptable</legend>
+							                            <div class="d-flex flex-row justify-content-center mb-3">
+							                                <img th:src="${invoice.imageFileName}" class="img-thumbnail rounded" style="width:200px;height:200px;"  />
+							                            </div>
+							                          </fieldset>
+							                      </div>
+							                      <div class="col-md-5">
+							                         <fieldset>
+							                            <legend>Remplacer la piece jointe</legend>
+							                            <div class="d-flex flex-row justify-content-center mb-3">
+							                                <input type="file" class="form-control" id="imageFile" name="image" accept="image/png,image/jpg,image/jpeg" />
+							                            </div>
+							                         </fieldset>
+							                      </div>
+							                    </div>
+                                            </fieldset>
                                             <div style="float:right;">
+                                                <a th:href="@{/index}" class="btn btn-danger rounded">
+					                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
+                                                           <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5"/>
+                                                      </svg>
+													  Annuler
+                                                 </a>
                                                  <button type="submit" class="btn btn-primary rounded">
 					                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
 														  <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0"/>
