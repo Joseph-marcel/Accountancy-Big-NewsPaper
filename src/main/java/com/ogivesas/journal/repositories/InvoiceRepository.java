@@ -24,5 +24,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String>{
 	@Query(value = "SELECT * FROM Invoice i WHERE i.create_at BETWEEN :startDate AND :endDate ", nativeQuery = true)
 	public List<Invoice> invoicesPerMonth(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 	
+	public Invoice findByInvoiceNumber(String invoiceNumber);
+	
 	public Invoice findByInvoiceId(String id);
 }

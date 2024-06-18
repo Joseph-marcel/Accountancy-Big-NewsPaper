@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.ogivesas.journal.configuration.userDetailsConfig.AppRole;
 import com.ogivesas.journal.configuration.userDetailsConfig.AppUser;
 import com.ogivesas.journal.models.Allowance;
@@ -23,7 +22,6 @@ import com.ogivesas.journal.models.Contractor;
 import com.ogivesas.journal.models.Customer;
 import com.ogivesas.journal.models.Director;
 import com.ogivesas.journal.models.Invoice;
-import com.ogivesas.journal.models.InvoiceDto;
 import com.ogivesas.journal.services.CustomUserDetailService;
 import com.ogivesas.journal.services.JournalService;
 import com.ogivesas.journal.servicesImpl.CustomUserDetailServiceImpl;
@@ -113,13 +111,11 @@ public class JournalController {
 		  }
 		  
 		  String fileName = StringUtils.cleanPath(multiPartFile.getOriginalFilename());
-		         Director.invoiceBuilder()
-		                 .imageFileName(fileName)
-		                 .build();
+		         invoice.setImageFileName(fileName);
 		  
 		Invoice savedInvoice =  iJournalService.saveInvoice(invoice);
 		
-		String upLoadDir = "invoice-photos/" + savedInvoice.getInvoiceId();
+		String upLoadDir = "invoice-images/" + savedInvoice.getInvoiceId();
 		       FileUpLoadUtil.saveFile(upLoadDir,fileName,multiPartFile);
 		       
 		       
@@ -159,26 +155,29 @@ public class JournalController {
 	@PostMapping("/updateInvoice")
 	public String updateInvoice(Model model,@RequestParam(defaultValue = "0")int page,
 			Invoice invoice,
-			@RequestParam("image")MultipartFile multiPartFile) {
+			@RequestParam("image")MultipartFile multiPartFile) throws IOException{
 		
-		Invoice savedInvoice = iJournalService.getInvoiceByInvoiceId(invoice.getInvoiceId());
+		  Invoice savedInvoice = iJournalService.getInvoiceByInvoiceId(invoice.getInvoiceId());
 		
-		String fileName = StringUtils.cleanPath(multiPartFile.getOriginalFilename());
-        Director.invoiceBuilder()
-                .imageFileName(fileName)
-                .build();
-		
-		savedInvoice.setInvoiceNumber(invoice.getInvoiceNumber());
-		savedInvoice.setCreateAt(invoice.getCreateAt());
-		savedInvoice.setAmount(invoice.getAmount());
-		savedInvoice.setImageFileName(invoice.getImageFileName());
-		
-		Invoice updatedInvoice = iJournalService.saveInvoice(savedInvoice);
-		if(updatedInvoice != null) {
+		  String fileName = StringUtils.cleanPath(multiPartFile.getOriginalFilename());
+	           			
+			
+		  savedInvoice.setInvoiceNumber(invoice.getInvoiceNumber());
+		  savedInvoice.setCreateAt(invoice.getCreateAt());
+		  savedInvoice.setAmount(invoice.getAmount());
 			 
-			String message = "Facture mise à jour";
-			model.addAttribute("message", message);
-		}
+		  savedInvoice.setImageFileName(fileName);
+		  
+		  Invoice updatedInvoice = iJournalService.saveInvoice(savedInvoice);
+		  
+		  String upLoadDir = "invoice-images/" + savedInvoice.getInvoiceId();
+		  
+		  FileUpLoadUtil.saveFile(upLoadDir,fileName,multiPartFile);
+		  
+		  if(updatedInvoice != null) {
+		     String message = "Facture mise à jour"; model.addAttribute("message",message); 
+		  }
+				 
 		
 		return "redirect:/index?page="+page;
 	}

@@ -1,13 +1,13 @@
 package com.ogivesas.journal.servicesImpl;
 
 
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.ogivesas.journal.exceptions.InvoiceExistingException;
 import com.ogivesas.journal.models.Allowance;
 import com.ogivesas.journal.models.Contractor;
 import com.ogivesas.journal.models.Customer;
@@ -176,31 +176,40 @@ public class JournalServiceImpl implements JournalService{
 		
 		  Contractor contractor = this.getCompanyByName(invoice.getContractor().getName());
 		  Allowance allowance = this.getAllowanceByAllowanceName(invoice.getAllowance().getAllowanceName());
+		  Invoice existInvoice = invoiceRepo.findByInvoiceNumber(invoice.getInvoiceNumber());
 		  
-		  if(contractor == null){ 
-			  if(allowance == null){ 
-				  contractor = this.addCompany(invoice);
-				  allowance = this.addAllowance(invoice);
-				  } else { 
+		  if(existInvoice != null) {
+			  throw new InvoiceExistingException("Une facture a déjà été enregistrée avec ce numéro");
+		  }else {
+			  
+			  if(contractor == null){ 
+				  if(allowance == null){ 
 					  contractor = this.addCompany(invoice);
-				   } 
-			      } else { 
-			    	  if(allowance == null) {
-		             allowance = this.addAllowance(invoice);
-		             } 
-			      }
-					
-					  invoice = Director.invoiceBuilder() 
-							  .invoiceId(UUID.randomUUID().toString())
-					          .invoiceNumber(invoice.getInvoiceNumber()) 
-					          .createAt(invoice.getCreateAt())
-					          .amount(invoice.getAmount()) 
-					          .contractor(contractor) 
-					          .allowance(allowance)
-					  .build();
+					  allowance = this.addAllowance(invoice);
+					  } else { 
+						  contractor = this.addCompany(invoice);
+					   } 
+				      } else { 
+				    	  if(allowance == null) {
+			             allowance = this.addAllowance(invoice);
+			             } 
+				      }
 						
-						
-						return  invoiceRepo.save(invoice);
+						  invoice = Director.invoiceBuilder() 
+								  .invoiceId(UUID.randomUUID().toString())
+						          .invoiceNumber(invoice.getInvoiceNumber()) 
+						          .createAt(invoice.getCreateAt())
+						          .amount(invoice.getAmount()) 
+						          .contractor(contractor) 
+						          .allowance(allowance)
+						          .imageFileName(invoice.getImageFileName())
+						  .build();
+							
+							
+							return  invoiceRepo.save(invoice);
+		  }
+		  
+		  
 	}
 
 	
@@ -247,6 +256,8 @@ public class JournalServiceImpl implements JournalService{
 		 savedInvoice.setInvoiceNumber(invoice.getInvoiceNumber());
 		 savedInvoice.setCreateAt(invoice.getCreateAt());
 		 savedInvoice.setAmount(invoice.getAmount());
+		 savedInvoice.setImageFileName(invoice.getImageFileName());
+		 
 		 
 		return  invoiceRepo.save(savedInvoice);
 	}

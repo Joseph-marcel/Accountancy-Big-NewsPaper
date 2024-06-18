@@ -35,7 +35,7 @@ public class Invoice {
 	public String getImageFileNameImagePath() {
 		if(imageFileName == null) return null;
 	
-		return "/pictures/invoice-photos/" + invoiceId + "/" + imageFileName;
+		return "/journal/invoice-images/" + invoiceId + "/" + imageFileName;
 	}
 	
 	

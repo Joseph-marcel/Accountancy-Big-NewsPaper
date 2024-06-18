@@ -14,7 +14,7 @@
                          <div class="card bg-light mb-3 mt-1">
                                <div class="card-heading bg-primary text-center text-white card-title">facture</div>
                                <div class="card-body">
-                                     <form th:action="@{/updateInvoice(page=${page})}" method="post"  th:object="${invoice}">                             
+                                     <form th:action="@{/updateInvoice(page=${page})}" method="post"  enctype="multipart/form-data"  th:object="${invoice}">                             
                                             <fieldset class="form-group border p-3 mt-3 mb-2">
                                                <div class="row justify-content-center">
                                                 <div class="col-md-6">
@@ -83,7 +83,7 @@
 							                          <fieldset>
 							                            <legend>Piece Comptable</legend>
 							                            <div class="d-flex flex-row justify-content-center mb-3">
-							                                <img th:src="${invoice.imageFileName}" class="img-thumbnail rounded" style="width:200px;height:200px;"  />
+							                                <img th:src="${invoice.imageFileNameImagePath}" class="img-thumbnail rounded" style="width:300px;height:300px;"  />
 							                            </div>
 							                          </fieldset>
 							                      </div>
@@ -91,7 +91,7 @@
 							                         <fieldset>
 							                            <legend>Remplacer la piece jointe</legend>
 							                            <div class="d-flex flex-row justify-content-center mb-3">
-							                                <input type="file" class="form-control" id="imageFile" name="image" accept="image/png,image/jpg,image/jpeg" />
+							                                <input type="file" class="form-control" id="imageFile" name="image" accept="image/png,image/jpg,image/jpeg" required/>
 							                            </div>
 							                         </fieldset>
 							                      </div>
