@@ -54,7 +54,7 @@ public class JournalController {
 				
 				Page<Invoice> listInvoices = iJournalService.listInvoices(page, size);
 				model.addAttribute("invoices", listInvoices.getContent());
-				int[] pages = new int[listInvoices.getTotalPages()+1];
+				int[] pages = new int[listInvoices.getTotalPages()-1];
 				
 				model.addAttribute("pages", pages);
 				
@@ -62,7 +62,7 @@ public class JournalController {
 				 
 				 Page<Invoice> listInvoicesP = iJournalService.listInvoicesPerSearchDate(createAt, page, size);
 				 model.addAttribute("invoices", listInvoicesP.getContent());
-				 int[] pages = new int[listInvoicesP.getTotalPages()]; 
+				 int[] pages = new int[listInvoicesP.getTotalPages()-1]; 
 				 model.addAttribute("pages", pages);
 				 model.addAttribute("createAt", createAt);
 				 
@@ -255,7 +255,7 @@ public class JournalController {
 			type = "CONTRACT";
 			Page<Contractor> listContractors = iJournalService.listContractors(type,page, size);
 			model.addAttribute("contractors", listContractors.getContent());
-			int[] pages = new int[listContractors.getTotalPages()];
+			int[] pages = new int[listContractors.getTotalPages()-1];
 			model.addAttribute("pages", pages);
 			model.addAttribute("currentPage", page);
 			
@@ -315,7 +315,7 @@ public class JournalController {
 			  
 			Page<Allowance> listAllowances = iJournalService.listAllowances(page, size);
 			model.addAttribute("allowances", listAllowances.getContent());
-			int[] pages = new int[listAllowances.getTotalPages()];
+			int[] pages = new int[listAllowances.getTotalPages()-1];
 			model.addAttribute("pages", pages);
 			model.addAttribute("currentPage", page);
 			

@@ -45,7 +45,7 @@
                                                     <div class="container">
                                                           <ul class="nav nav-pills">
                                                                <li th:each="p,status:${pages}" class="btn-sm btn-info ms-1">
-                                                                    <a th:class="${status.index==currentPage?'btn btn-info ms-1':'btn btn-outline-info ms-1'}"
+                                                                    <a th:class="${status.index==currentPage-1?'btn btn-info ms-1':'btn btn-outline-info ms-1'}"
 							                                             th:href="@{/prestations(page=${status.index+1})}"  
 							                                             th:text="${status.index+1}">
                                                                     </a>
