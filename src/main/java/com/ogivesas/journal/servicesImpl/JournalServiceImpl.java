@@ -6,6 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.ogivesas.journal.exceptions.AllowanceNotExistException;
+import com.ogivesas.journal.exceptions.ContractorNotExistingException;
 import com.ogivesas.journal.exceptions.InvoiceExistingException;
 import com.ogivesas.journal.models.Allowance;
 import com.ogivesas.journal.models.Contractor;
@@ -52,7 +55,7 @@ public class JournalServiceImpl implements JournalService{
 		
 		Contractor contractor = (Contractor)companyRepo.findByName(name);
 		
-		if(contractor == null) throw new NullPointerException("Ce prestataire n'existe pas.");
+		if(contractor == null) throw new ContractorNotExistingException("Ce prestataire n'existe pas.");
 		
 		return  contractor;
 	}
@@ -64,7 +67,7 @@ public class JournalServiceImpl implements JournalService{
 		
 		Contractor contractor = (Contractor)companyRepo.findById(id).orElse(null);
 		
-		if(contractor == null) throw new NullPointerException("Ce prestataire n'existe pas.");
+		if(contractor == null) throw new ContractorNotExistingException("Ce prestataire n'existe pas.");
 			
 		return contractor;
 	}
@@ -115,7 +118,7 @@ public class JournalServiceImpl implements JournalService{
 		
 		Allowance allowance = allowanceRepo.findByAllowanceName(name);
 		
-		if(allowance == null) throw new NullPointerException("Cette prestation n'existe pas.");
+		if(allowance == null) throw new AllowanceNotExistException("Cette prestation n'existe pas.");
 		
 		return allowance;
 	}
@@ -127,7 +130,7 @@ public class JournalServiceImpl implements JournalService{
 		
 		Allowance allowance = allowanceRepo.findById(id).orElse(null);
 		
-		if(allowance == null) throw new NullPointerException("Cette prestation n'existe pas.");
+		if(allowance == null) throw new AllowanceNotExistException("Cette prestation n'existe pas.");
 		
 		return allowance;
 	}
@@ -226,7 +229,7 @@ public class JournalServiceImpl implements JournalService{
 		
 		Customer cstm = (Customer)companyRepo.findByName(name);
 		
-		if(cstm == null) throw new NullPointerException("Ce prestataire n'existe pas.");
+		if(cstm == null) throw new ContractorNotExistingException("Ce prestataire n'existe pas.");
 		
 		return cstm;
 	}

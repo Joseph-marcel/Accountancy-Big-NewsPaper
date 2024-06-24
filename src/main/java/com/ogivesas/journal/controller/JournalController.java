@@ -44,29 +44,30 @@ public class JournalController {
 	@GetMapping("/index")
 	public String index(Model model,
 			@RequestParam(name = "createAt", defaultValue = "")@DateTimeFormat(pattern = "yyyy-MM-dd") Date createAt,
+			String message,
 			@RequestParam(name = "page", defaultValue = "0")int page,
 			@RequestParam(name = "size", defaultValue = "20")int size) {
 		    
+		        model.addAttribute("message", message);
 		    
 		try {
 			
-			if(createAt == null) {
-				
-				Page<Invoice> listInvoices = iJournalService.listInvoices(page, size);
-				model.addAttribute("invoices", listInvoices.getContent());
-				int[] pages = new int[listInvoices.getTotalPages()-1];
-				
-				model.addAttribute("pages", pages);
-				
-			 }else {
-				 
-				 Page<Invoice> listInvoicesP = iJournalService.listInvoicesPerSearchDate(createAt, page, size);
-				 model.addAttribute("invoices", listInvoicesP.getContent());
-				 int[] pages = new int[listInvoicesP.getTotalPages()-1]; 
-				 model.addAttribute("pages", pages);
-				 model.addAttribute("createAt", createAt);
-				 
-			 }
+				if(createAt == null) {
+					
+					Page<Invoice> listInvoices = iJournalService.listInvoices(page, size);
+					model.addAttribute("invoices", listInvoices.getContent());
+					int[] pages = new int[listInvoices.getTotalPages()-1];
+					model.addAttribute("pages", pages);
+					
+				 }else {
+					 
+					 Page<Invoice> listInvoicesP = iJournalService.listInvoicesPerSearchDate(createAt, page, size);
+					 model.addAttribute("invoices", listInvoicesP.getContent());
+					 int[] pages = new int[listInvoicesP.getTotalPages()-1]; 
+					 model.addAttribute("pages", pages);
+					 model.addAttribute("createAt", createAt);
+					 
+				 }
 			    
 			     model.addAttribute("currentPage", page);
 			 
@@ -84,7 +85,6 @@ public class JournalController {
 	@GetMapping("/formInvoice")
 	public String register(Model model) {
 		
-		
 	    Invoice invoice = Director.invoiceBuilder().build();
 		
 		Customer cstm = iJournalService.getCustomerByName("OGIVE SAS");
@@ -101,31 +101,31 @@ public class JournalController {
 	@PostMapping("/createInvoice")
 	public String newInvoice(Model model,@Valid Invoice invoice,
 			BindingResult bindingResult,
+			String message,
 			@RequestParam(defaultValue="0")int page,
 			@RequestParam("image") MultipartFile multiPartFile) throws IOException {
 		
 		
-		  if(bindingResult.hasErrors()){
-		  
-		  return "formInvoice"; 
-		  }
-		  
-		  String fileName = StringUtils.cleanPath(multiPartFile.getOriginalFilename());
-		         invoice.setImageFileName(fileName);
-		  
-		Invoice savedInvoice =  iJournalService.saveInvoice(invoice);
-		
-		String upLoadDir = "invoice-images/" + savedInvoice.getInvoiceId();
-		       FileUpLoadUtil.saveFile(upLoadDir,fileName,multiPartFile);
+			  if(bindingResult.hasErrors()){
+			  
+			     return "formInvoice"; 
+			  }
+			  
+			  String fileName = StringUtils.cleanPath(multiPartFile.getOriginalFilename());
+			         invoice.setImageFileName(fileName);
+			  
+			  Invoice savedInvoice =  iJournalService.saveInvoice(invoice);
+			
+			  String upLoadDir = "invoice-images/" + savedInvoice.getInvoiceId();
+			         FileUpLoadUtil.saveFile(upLoadDir,fileName,multiPartFile);
 		       
 		       
-		if(savedInvoice != null) {
-			String message ="Nouvelle facture enregistrée...!!!";
-			model.addAttribute("message", message);
-		}
+			  if(savedInvoice != null) {
+			     message ="Nouvelle facture enregistrée...!!!";
+			   }
 		  
 		 
-		return "redirect:/index";
+		return "redirect:/index?message="+message;
 	}
 	
 	
@@ -155,6 +155,7 @@ public class JournalController {
 	@PostMapping("/updateInvoice")
 	public String updateInvoice(Model model,@RequestParam(defaultValue = "0")int page,
 			Invoice invoice,
+			String message,
 			@RequestParam("image")MultipartFile multiPartFile) throws IOException{
 		
 		  Invoice savedInvoice = iJournalService.getInvoiceByInvoiceId(invoice.getInvoiceId());
@@ -175,23 +176,25 @@ public class JournalController {
 		  FileUpLoadUtil.saveFile(upLoadDir,fileName,multiPartFile);
 		  
 		  if(updatedInvoice != null) {
-		     String message = "Facture mise à jour"; model.addAttribute("message",message); 
+		      message = "Facture mise à jour"; 
 		  }
 				 
 		
-		return "redirect:/index?page="+page;
+		return "redirect:/index?page="+page+"&message="+message;
 	}
 	
 	
 	@GetMapping("/deleteInvoice")
-	public String deleteInvoice(Model model,@RequestParam(defaultValue = "0")int page,@RequestParam(name = "id") String id) {
+	public String deleteInvoice(Model model,@RequestParam(defaultValue = "0")int page,
+			                    @RequestParam(name = "id") String id,
+			                    String message) {
 		
 		iJournalService.deleteInvoice(id);
 		
-		String message = "Facture supprimée";
-		model.addAttribute("message", message);
+	    message = "Facture supprimée";
 		
-		return "redirect:/index?page="+page;
+		
+		return "redirect:/index?page="+page+"&message="+message;
 	}
 	
 	
@@ -297,9 +300,11 @@ public class JournalController {
 	
 	@GetMapping("/prestataires")
 	public String prestataires(Model model,String type,
+			String message,
 			@RequestParam(name = "page", defaultValue = "0")int page,
 			@RequestParam(name = "size", defaultValue = "20")int size) {
 		
+		           model.addAttribute("message",message);
 		try {
 			  
 			type = "CONTRACT";
@@ -341,14 +346,17 @@ public class JournalController {
 	
 	
 	@PostMapping("/updateContractor")
-	public String updateContractor(Model model,@RequestParam(defaultValue = "0")int page,Contractor contractor) {
+	public String updateContractor(Model model,
+			@RequestParam(defaultValue = "0")int page,
+			Contractor contractor,
+			String message) {
 		 
 		iJournalService.updateContractor(contractor); 
 		
-		String message = "Modification enregistrée...!!!";
-		model.addAttribute("message", message);
+	    message = "Modification enregistrée...!!!";
 		
-		return "redirect:/prestataires?page="+ page;
+		
+		return "redirect:/prestataires?page="+page+"&message="+message;
 	}
 	
 	
@@ -359,8 +367,11 @@ public class JournalController {
 	@GetMapping("/prestations")
 	public String prestations(Model model,
 			@RequestParam(name = "page", defaultValue = "0")int page,
-			@RequestParam(name = "size", defaultValue = "20")int size) {
+			@RequestParam(name = "size", defaultValue = "20")int size,
+			String message) {
 		
+		    	 model.addAttribute("message", message);
+		           
 		try {
 			  
 			Page<Allowance> listAllowances = iJournalService.listAllowances(page, size);
@@ -400,14 +411,15 @@ public class JournalController {
 	
 	
 	@PostMapping("/updateAllowance")
-	public String updateAllowance(Model model,int page,Allowance allowance) {
+	public String updateAllowance(Model model,int page,
+			Allowance allowance,
+			String message) {
 		
 		 iJournalService.updateAllowance(allowance);
 		 
-		  String message = "Modification enregistrée...!!!";
-		  model.addAttribute("message", message);
+		  message = "Modification enregistrée...!!!";
 		 
-		 return "redirect:/prestations?page="+page+"&message"+message;
+		 return "redirect:/prestations?page="+page+"&message="+message;
 	}
 	
 	
@@ -425,7 +437,9 @@ public class JournalController {
 	
 	
 	@PostMapping("/createUser")
-	public String createUser(Model model,@Valid AppUser appUser,BindingResult bindingResult) {
+	public String createUser(Model model,@Valid AppUser appUser,
+			BindingResult bindingResult,
+			String message) {
 		
 		if(bindingResult.hasErrors()) {
 			
@@ -434,10 +448,10 @@ public class JournalController {
 		
 	    customUserDetailService.addNewUser(appUser.getUsername(), appUser.getPassword(), appUser.getEmail(), appUser.getConfirmPassword());
 	    
-	    String message = "Nouvel utilisateur enregistré avec success...!!!";
-	    model.addAttribute("message", message);
+	    message = "Nouvel utilisateur enregistré avec success...!!!";
+	    
 		
-		return "redirect:/listUsers";
+		return "redirect:/listUsers?message="+message;
 	}
 	
 	
@@ -453,7 +467,9 @@ public class JournalController {
 	
 	
 	@PostMapping("/createRole")
-	public String createRole(Model model,@Valid AppRole appRole, BindingResult bindingResult) {
+	public String createRole(Model model,@Valid AppRole appRole,
+			BindingResult bindingResult,
+			String message) {
 		
 		if(bindingResult.hasErrors()) {
 			
@@ -462,24 +478,23 @@ public class JournalController {
 		
 		 customUserDetailService.addNewRole(appRole.getRole());
 		 
-		 String message = "Nouveau role enregistré avec success...!!!";
-		    model.addAttribute("message", message);
+		  message = "Nouveau role enregistré avec success...!!!";
 		
-		return "redirect:/newRole";
+		return "redirect:/newRole?message="+message;
 	}
 	
 	
 	@GetMapping("/listUsers")
 	public String listUsers(Model model,
 			@RequestParam(name = "page", defaultValue = "0")int page,
-			@RequestParam(name = "size", defaultValue = "6")int size) {
+			@RequestParam(name = "size", defaultValue = "6")int size,
+			String message) {
 
-		
+		         model.addAttribute("message", message);
 		try {
 			  
 			List<AppUser> users = customUserDetailService.listUsers();
 			List<AppRole> roles = customUserDetailService.listRoles();
-			
 			
 			model.addAttribute("users", users);
 			model.addAttribute("roles", roles);
@@ -524,7 +539,7 @@ public class JournalController {
 	    	
 	    }catch(Exception e) {
 	    	
-	    	model.addAttribute("exception",e);
+	    	   model.addAttribute("exception",e);
 	    }
 		
 		return "redirect:/listUsers";

@@ -54,9 +54,6 @@
                    <div class="col-md-10 offset-1">
                          <div class="card bg-light mb-3 mt-1">
                                <div class="card-heading bg-primary text-center text-white card-title">Recapitulatif des factures journalieres</div>
-                               <div  class="text-success" th:if="${message}"  th:text="${message}">
-	                             
-                                 </div>
                                <div class="card-body">
                                      <form th:action="@{index}" method="get">
                                             <fieldset>
@@ -82,9 +79,14 @@
                                      </form>
                                             <fieldset>
                                                     <legend>Resultats</legend>
-                                                       <div  class="text-success" th:if="${message}"  th:text="${message}">
-	                             
-                                                       </div>
+                                                       <div class="col-md-6 offset-3">
+													      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+															  <div  class="text-success" th:if="${message}"  th:text="${message}">
+				                            
+				                                              </div> 
+															  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+										                  </div>
+									                   </div>								                                                                    
                                                        <table class="table table-bordered text-center sous-liens table-striped">
                                                             <thead style="background-color:#ebebeb;">
 						                                       <tr class="header-footer-background-color text-white">
