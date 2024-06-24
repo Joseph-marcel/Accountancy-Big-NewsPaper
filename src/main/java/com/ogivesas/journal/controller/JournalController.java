@@ -242,6 +242,56 @@ public class JournalController {
 	}
 	
 	
+	
+	@GetMapping("/natureInvoice")
+	public String natureInvoice(Model model,
+                @RequestParam(name = "nature",defaultValue = "")String nature,
+                @RequestParam(name = "startDate", defaultValue = "")@DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+                @RequestParam(name = "endDate", defaultValue = "")@DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+                @RequestParam(defaultValue = "0")int page,
+    			@RequestParam(defaultValue = "20")int size) {
+		
+				model.addAttribute("startDate", startDate);
+			    model.addAttribute("endDate", endDate);
+			    model.addAttribute("nature", nature);
+		
+			    try {
+					
+		        	if(startDate == null & endDate == null & nature == "") {
+		        		
+		        		Page<Invoice> listInvoices = iJournalService.listInvoices(page, size);
+		    			model.addAttribute("invoices", listInvoices.getContent());
+		    			int[] pages = new int[listInvoices.getTotalPages()]; 
+		    			model.addAttribute("pages", pages);
+		        	}else {
+		        		
+		        		int amount = 0;
+		        		Page<Invoice> natureBills = iJournalService.InvoicesPerNatureAndMonth(startDate, endDate,nature, page, size);
+				    	List<Invoice> natureInvoices = iJournalService.invoicesSum(nature, startDate, endDate);
+				    	 
+				    	for(Invoice invoice:natureInvoices) {
+				    		amount = amount + invoice.getAmount();
+				    	}
+				    	
+						model.addAttribute("invoices", natureBills.getContent());
+						int[] pages = new int[natureBills.getTotalPages() - 1]; 
+						model.addAttribute("pages", pages);
+						model.addAttribute("amount", amount);
+					
+		        	}
+					
+					model.addAttribute("currentPage", page);
+					
+				}catch (Exception e){
+					
+					model.addAttribute("exception",e);
+				}
+				
+		
+		return "nature";
+	}
+	
+	
 	//Controller Contractor method
 	
 	
@@ -316,8 +366,9 @@ public class JournalController {
 			Page<Allowance> listAllowances = iJournalService.listAllowances(page, size);
 			model.addAttribute("allowances", listAllowances.getContent());
 			int[] pages = new int[listAllowances.getTotalPages()-1];
-			model.addAttribute("pages", pages);
+			model.addAttribute("pages", pages);			
 			model.addAttribute("currentPage", page);
+		
 			
 		}catch (Exception e) {
 			
@@ -349,14 +400,14 @@ public class JournalController {
 	
 	
 	@PostMapping("/updateAllowance")
-	public String updateAllowance(Model model,@RequestParam(defaultValue = "0")int page,Allowance allowance) {
+	public String updateAllowance(Model model,int page,Allowance allowance) {
 		
 		 iJournalService.updateAllowance(allowance);
 		 
-		 String message = "Modification enregistrée...!!!";
-			    model.addAttribute("message", message);
+		  String message = "Modification enregistrée...!!!";
+		  model.addAttribute("message", message);
 		 
-		 return "redirect:/prestations?page="+page;
+		 return "redirect:/prestations?page="+page+"&message"+message;
 	}
 	
 	

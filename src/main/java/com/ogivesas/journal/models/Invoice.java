@@ -28,6 +28,7 @@ public class Invoice {
 	@Column(nullable = false)
 	@NotNull(message = "Champ obligatire")
 	private Integer amount;
+	private String nature;
 	@Column(nullable = true, length = 64)
 	private String imageFileName;
 	
@@ -81,6 +82,12 @@ public class Invoice {
 			invoice.amount = amount;
 			return this;
 		}
+		
+		public InvoiceBuilder nature(String nature) {
+					
+					invoice.nature = nature;
+					return this;
+				}
 		
 		public InvoiceBuilder imageFileName(String imageFileName) {
 			

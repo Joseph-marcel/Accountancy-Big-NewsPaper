@@ -41,5 +41,7 @@ public interface JournalService {
 	public void deleteInvoice(String id);
 	public Page<Invoice> monthlyInvoices(Date startDate, Date endDate,int page,int size);
 	public List<Invoice> invoicesPerMonth(Date startDate, Date endDate);
+	public List<Invoice> invoicesSum(String nature,Date startDate, Date endDate);
+	public Page<Invoice> InvoicesPerNatureAndMonth(Date startDate, Date endDate,String nature,int page,int size);
 	
 }

@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.ogivesas.journal.exceptions.InvoiceExistingException;
 import com.ogivesas.journal.models.Allowance;
 import com.ogivesas.journal.models.Contractor;
@@ -200,6 +199,7 @@ public class JournalServiceImpl implements JournalService{
 						          .invoiceNumber(invoice.getInvoiceNumber()) 
 						          .createAt(invoice.getCreateAt())
 						          .amount(invoice.getAmount()) 
+						          .nature(invoice.getNature())
 						          .contractor(contractor) 
 						          .allowance(allowance)
 						          .imageFileName(invoice.getImageFileName())
@@ -256,6 +256,7 @@ public class JournalServiceImpl implements JournalService{
 		 savedInvoice.setInvoiceNumber(invoice.getInvoiceNumber());
 		 savedInvoice.setCreateAt(invoice.getCreateAt());
 		 savedInvoice.setAmount(invoice.getAmount());
+		 savedInvoice.setNature(invoice.getNature());
 		 savedInvoice.setImageFileName(invoice.getImageFileName());
 		 
 		 
@@ -302,6 +303,22 @@ public class JournalServiceImpl implements JournalService{
 		return invoiceRepo.invoicesPerMonth(startDate, endDate);
 	}
 
+
+	@Override
+	public Page<Invoice> InvoicesPerNatureAndMonth(Date startDate, Date endDate, String nature, int page, int size) {
+		// TODO Auto-generated method stub
+		
+		return invoiceRepo.invoicesPerNature(nature, startDate, endDate, PageRequest.of(page, size));
+	}
+
+
+	@Override
+	public List<Invoice> invoicesSum(String nature, Date startDate, Date endDate) {
+		// TODO Auto-generated method stub
+		
+		
+		return invoiceRepo.invoicesSumPerNature(nature, startDate, endDate);
+	}
 
     
 }

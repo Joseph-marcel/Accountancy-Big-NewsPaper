@@ -3,46 +3,53 @@
      xmlns:th="http://www.thymeleaf.org" 
      xmlns:layout="http://www.ultraq.net.nz" lang="en"
      layout:decorate="basic"
+     xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
 >
 <head>
-<title>Bilan</title>
+<title>Factures par nature</title>
 </head>
 <body>
-     <div layout:fragment="content">
+      <div layout:fragment="content">
           <div class="d-flex">
                 <div class="col-md-10 offset-1">
                      <div class="card bg-light mb-3 mt-1">
-                      <div class="card-heading bg-primary text-center text-white card-title">Recapitulatif periodique</div>
+                      <div class="card-heading bg-primary text-center text-white card-title">bilan par nature</div>
                       <div  class="text-success" th:if="${message}"  th:text="${message}">
                      
                       </div>
                               <div class="card-body">
-                                     <form th:action="@{monthInvoice}" method="get">
+                                     <form th:action="@{natureInvoice}" method="get">
                                             <fieldset>
 							                    <legend>Recherche</legend>
 							                       <div class="col-md-12">							                        
-							                          <div class="d-flex flex-row mb-3">							                     
-							                              <div style="margin-right:5px;">
-							                                  <label for="startDate"  class="form-label">Date debut:</label>
+							                          <div class="d-flex flex-row mb-3">
+							                              <div style="margin-right:3px;">
+							                                  <label for="startDate"  class="form-label">nature:</label>
 							                              </div>
-							                              <div style="margin-right:5px;">
+							                              <div style="margin-right:3px;">
+							                                  <input type="text" class="form-control" id="nature" name="nature" th:value="${#dates.format(endDate, 'yyyy-MM-dd')}" />
+							                              </div>
+							                              <div style="margin-right:3px;">
+							                                  <label for="endDate"  class="form-label">Date debut:</label>
+							                              </div>							                     
+							                              <div style="margin-right:3px;">
 							                                  <input type="date" class="form-control" id="startDate" name="startDate" th:value="${#dates.format(startDate, 'yyyy-MM-dd')}" />
 							                              </div>
-							                              <div style="margin-right:5px;">
+							                              <div style="margin-right:3px;">
 							                                  <label for="endDate"  class="form-label">Date fin:</label>
 							                              </div>
-							                              <div style="margin-right:5px;">
+							                              <div style="margin-right:3px;">
 							                                  <input type="date" class="form-control" id="endDate" name="endDate" th:value="${#dates.format(endDate, 'yyyy-MM-dd')}" />
 							                              </div>
-							                              <div style="margin-right:25px;">
+							                              <div style="margin-right:15px;">
 							                                  <button type="submit" class="btn btn-primary rounded">
 							                                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                                                                        </svg>
 							                                  </button>
 							                              </div>
-							                              <div style="margin-right:5px;">
-							                                  <label for="amount"  class="form-label">Total(F CFA):</label>
+							                              <div style="margin-right:2px;">
+							                                  <label for="amount"  class="form-label">Total(FCFA):</label>
 							                              </div>
 							                              <div style="margin-right:5px;">
 							                                  <input type="text" class="form-control text-center" id="amount" th:value="${#numbers.formatInteger(amount,3,'POINT')}" >

@@ -27,4 +27,11 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String>{
 	public Invoice findByInvoiceNumber(String invoiceNumber);
 	
 	public Invoice findByInvoiceId(String id);
+	
+	@Query(value = "SELECT * FROM Invoice i WHERE i.nature = :nature AND i.create_at BETWEEN :startDate AND :endDate ORDER BY i.create_at DESC", nativeQuery = true)
+	public Page<Invoice> invoicesPerNature(@Param("nature")String nature,@Param("startDate")Date startDate,@Param("endDate") Date endDate,PageRequest pageRequest);
+	
+	@Query(value = "SELECT * FROM Invoice i WHERE i.nature = :nature AND i.create_at BETWEEN :startDate AND :endDate ", nativeQuery = true)
+	public List<Invoice> invoicesSumPerNature(@Param("nature") String nature,@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+	
 }
