@@ -7,5 +7,5 @@ import com.ogivesas.journal.models.Allowance;
 
 public interface AllowanceRepository extends JpaRepository<Allowance, Long>{
 
-	public Allowance findByAllowanceName(String name);
+	 Allowance findByAllowanceName(String name);
 }

@@ -11,37 +11,37 @@ import com.ogivesas.journal.models.Invoice;
 public interface JournalService {
 	
 	//CRUD entity Contractor
-	public Contractor addCompany(Invoice invoice);
-	public Contractor getCompanyByName(String name);
-	public Page<Contractor> listContractors(String type,int page,int size);
-	public Contractor  getCompanyById(Long id);
-	public Contractor updateContractor(Contractor contractor);
+      Contractor addCompany(Invoice invoice);
+	  Contractor getCompanyByName(String name);
+	  Page<Contractor> listContractors(String type,int page,int size);
+	  Contractor  getCompanyById(Long id);
+	  Contractor updateContractor(Contractor contractor);
 	
 	
 	//CRUD entity Allowance
-	public Allowance addAllowance(Invoice invoice);
-	public Allowance getAllowanceByAllowanceName(String name);
-	public Allowance getAllowanceById(Long id);
-	public Page<Allowance> listAllowances(int page,int size);
-	public Allowance updateAllowance(Allowance allowance);
+	 Allowance addAllowance(Invoice invoice);
+	 Allowance getAllowanceByAllowanceName(String name);
+	 Allowance getAllowanceById(Long id);
+	 Page<Allowance> listAllowances(int page,int size);
+	 Allowance updateAllowance(Allowance allowance);
 	
 	
 	//CRUD entity Customer
-	public void addCustomer(Customer ctsm);
-	public Customer getCustomerByName(String name);
+	 void addCustomer(Customer ctsm);
+	      Customer getCustomerByName(String name);
 	
 	
 	//CRUD entity Invoice
-	public Invoice newInvoice(Invoice invoice);
-	public Page<Invoice> listInvoices(int page,int size);
-	public Page<Invoice> listInvoicesPerSearchDate(Date createAt,int page,int size);
-	public Invoice getInvoiceByInvoiceId(String id);
-	public Invoice updateInvoice(Invoice invoice);
-	public Invoice saveInvoice(Invoice invoice);
-	public void deleteInvoice(String id);
-	public Page<Invoice> monthlyInvoices(Date startDate, Date endDate,int page,int size);
-	public List<Invoice> invoicesPerMonth(Date startDate, Date endDate);
-	public List<Invoice> invoicesSum(String nature,Date startDate, Date endDate);
-	public Page<Invoice> InvoicesPerNatureAndMonth(Date startDate, Date endDate,String nature,int page,int size);
+	 Invoice newInvoice(Invoice invoice);
+	 Page<Invoice> listInvoices(int page,int size);
+	 Page<Invoice> listInvoicesPerSearchDate(Date createAt,int page,int size);
+	 Invoice getInvoiceByInvoiceId(String id);
+	 Invoice updateInvoice(Invoice invoice);
+	 Invoice saveInvoice(Invoice invoice);
+	 void deleteInvoice(String id);
+	 Page<Invoice> monthlyInvoices(Date startDate, Date endDate,int page,int size);
+	 List<Invoice> invoicesPerMonth(Date startDate, Date endDate);
+	 List<Invoice> invoicesSum(String nature,Date startDate, Date endDate);
+     Page<Invoice> InvoicesPerNatureAndMonth(Date startDate, Date endDate,String nature,int page,int size);
 	
 }
