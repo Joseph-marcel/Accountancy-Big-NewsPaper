@@ -15,14 +15,17 @@
                          <div class="card bg-light mb-3 mt-1">
                                <div class="card-heading bg-primary text-center text-white card-title">Nos Prestataires</div>
                                <div class="card-body">
-                                           <div class="col-md-6 offset-3">
-									      <div class="alert alert-warning alert-dismissible fade show" role="alert">
-											   <div  class="text-success" th:if="${message}"  th:text="${message}">
-                            
-                                               </div> 
-											  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-										   </div>
-									  </div>
+                                       <div th:with="test = ${message}">
+                                          <div class="col-md-6 offset-3" th:if="${test}">                            
+										      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+												  <div  class="text-success" th:if="${message}"  th:text="${message}">			                            
+	                                              </div> 
+												  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+							                   </div>
+							                </div>
+							                <div th:unless="${message}">
+				                            </div>
+									    </div>
                                             <fieldset class="form-group border p-3 mt-3">
                                                        <table class="table table-bordered text-center sous-liens table-striped">
                                                             <thead style="background-color:#ebebeb;">
