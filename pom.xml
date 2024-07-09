@@ -12,7 +12,7 @@
 	<artifactId>journal</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>journal</name>
-	<description>Recapitulatif,evaluation et analyse des actes comptables un excercise </description>
+	<description>Recapitulatif,evaluation et analyse des actes comptables</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
