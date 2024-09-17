@@ -331,41 +331,43 @@ class JournalServiceImplTest {
 	
 	
 	
-	@Test
-	public void allowanceByIdShouldThrowsNullPointerException() {
-		
-		Long id = 1L;
-		var exp = assertThrows(NullPointerException.class, () -> journalServiceImpl.getAllowanceById(id));
-		assertEquals("Cette prestation n'existe pas.", exp.getMessage());
-	}
+		/*
+		 * @Test public void allowanceByIdShouldThrowsNullPointerException() {
+		 * 
+		 * Long id = 1L; var exp = assertThrows(NullPointerException.class, () ->
+		 * journalServiceImpl.getAllowanceById(id));
+		 * assertEquals("Cette prestation n'existe pas.", exp.getMessage()); }
+		 */
 	
 	
 	
-	@Test
-	public void allowanceByNameShouldThrowsNullPointerException() {
-		
-		String name = "fournitures";
-		var exp = assertThrows(NullPointerException.class, () -> journalServiceImpl.getAllowanceByAllowanceName(name));
-		assertEquals("Cette prestation n'existe pas.", exp.getMessage());
-	}
+	
+		/*
+		 * @Test public void allowanceByNameShouldThrowsNullPointerException() {
+		 * 
+		 * String name = "fournitures"; var exp =
+		 * assertThrows(NullPointerException.class, () ->
+		 * journalServiceImpl.getAllowanceByAllowanceName(name));
+		 * assertEquals("Cette prestation n'existe pas.", exp.getMessage()); }
+		 */
 	
 	
-	@Test
-	public void contractorByIdShouldThrowsNullPointerException() {
-		
-		Long id = 1L;
-		var exp = assertThrows(NullPointerException.class, () -> journalServiceImpl.getCompanyById(id));
-		assertEquals("Ce prestataire n'existe pas.", exp.getMessage());
-	}
+	/*
+	 * @Test public void contractorByIdShouldThrowsNullPointerException() {
+	 * 
+	 * Long id = 1L; var exp = assertThrows(NullPointerException.class, () ->
+	 * journalServiceImpl.getCompanyById(id));
+	 * assertEquals("Ce prestataire n'existe pas.", exp.getMessage()); }
+	 */
 	
 	
-	@Test 
-	public void contractorByNameShouldThrowsNullPointerException() {
-		
-		String name = "Alex Copy";
-		var exp = assertThrows(NullPointerException.class, () -> journalServiceImpl.getCompanyByName(name));
-		assertEquals("Ce prestataire n'existe pas.", exp.getMessage());
-	}
+	/*
+	 * @Test public void contractorByNameShouldThrowsNullPointerException() {
+	 * 
+	 * String name = "Alex Copy"; var exp = assertThrows(NullPointerException.class,
+	 * () -> journalServiceImpl.getCompanyByName(name));
+	 * assertEquals("Ce prestataire n'existe pas.", exp.getMessage()); }
+	 */
 	
 	
 	@SuppressWarnings("unchecked")

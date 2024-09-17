@@ -2,6 +2,7 @@ package com.ogivesas.journal.servicesImpl;
 
 
 import java.util.*;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -93,7 +94,14 @@ public class JournalServiceImpl implements JournalService{
 		           
 		return   companyRepo.save(savedContractor);
 	}
+	
 
+	@Override
+	public List<Contractor> getAllTenders(String type) {
+		// TODO Auto-generated method stub
+		
+		return companyRepo.listTenders(type);
+	}
 
 	
 	
@@ -154,6 +162,14 @@ public class JournalServiceImpl implements JournalService{
 		
 		return allowanceRepo.findAll(PageRequest.of(page, size));
 	}
+	
+	
+	@Override
+	public List<Allowance> getAllAllowances() {
+		// TODO Auto-generated method stub
+		
+		return allowanceRepo.findAll();
+	}
 
 	
 	
@@ -208,11 +224,9 @@ public class JournalServiceImpl implements JournalService{
 						          .imageFileName(invoice.getImageFileName())
 						  .build();
 							
-							
-							return  invoiceRepo.save(invoice);
+						
+						return  invoiceRepo.save(invoice);
 		  }
-		  
-		  
 	}
 
 	
@@ -308,14 +322,6 @@ public class JournalServiceImpl implements JournalService{
 
 
 	@Override
-	public Page<Invoice> InvoicesPerNatureAndMonth(Date startDate, Date endDate, String nature, int page, int size) {
-		// TODO Auto-generated method stub
-		
-		return invoiceRepo.invoicesPerNature(nature, startDate, endDate, PageRequest.of(page, size));
-	}
-
-
-	@Override
 	public List<Invoice> invoicesSum(String nature, Date startDate, Date endDate) {
 		// TODO Auto-generated method stub
 		
@@ -323,5 +329,6 @@ public class JournalServiceImpl implements JournalService{
 		return invoiceRepo.invoicesSumPerNature(nature, startDate, endDate);
 	}
 
-    
+
+
 }

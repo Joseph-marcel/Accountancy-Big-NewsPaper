@@ -16,6 +16,7 @@ public interface JournalService {
 	  Page<Contractor> listContractors(String type,int page,int size);
 	  Contractor  getCompanyById(Long id);
 	  Contractor updateContractor(Contractor contractor);
+	  List<Contractor> getAllTenders(String type);
 	
 	
 	//CRUD entity Allowance
@@ -24,6 +25,7 @@ public interface JournalService {
 	 Allowance getAllowanceById(Long id);
 	 Page<Allowance> listAllowances(int page,int size);
 	 Allowance updateAllowance(Allowance allowance);
+	 List<Allowance> getAllAllowances();
 	
 	
 	//CRUD entity Customer
@@ -42,6 +44,4 @@ public interface JournalService {
 	 Page<Invoice> monthlyInvoices(Date startDate, Date endDate,int page,int size);
 	 List<Invoice> invoicesPerMonth(Date startDate, Date endDate);
 	 List<Invoice> invoicesSum(String nature,Date startDate, Date endDate);
-     Page<Invoice> InvoicesPerNatureAndMonth(Date startDate, Date endDate,String nature,int page,int size);
-	
 }

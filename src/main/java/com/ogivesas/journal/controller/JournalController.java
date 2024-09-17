@@ -3,7 +3,11 @@ package com.ogivesas.journal.controller;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,11 +31,13 @@ import com.ogivesas.journal.services.JournalService;
 import com.ogivesas.journal.servicesImpl.CustomUserDetailServiceImpl;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import utils.FileUpLoadUtil;
 
 
 @Controller
 @AllArgsConstructor
+@Slf4j
 public class JournalController {
 
 	private JournalService iJournalService;
@@ -219,11 +225,12 @@ public class JournalController {
         	}else {
         		
         		int amount = 0;
-        		Page<Invoice> monthlyBills = iJournalService.monthlyInvoices(startDate, endDate, page, size);
+        		Page<Invoice> monthlyBills = iJournalService.monthlyInvoices(startDate, endDate,page, size);
 		    	List<Invoice> monthlyInvoices = iJournalService.invoicesPerMonth(startDate, endDate);
+		    	                     
 		    	 
 		    	for(Invoice invoice:monthlyInvoices) {
-		    		amount = amount + invoice.getAmount();
+		    		amount = amount + invoice.getAmount();		  
 		    	}
 		    	
 				model.addAttribute("invoices", monthlyBills.getContent());
@@ -246,41 +253,83 @@ public class JournalController {
 	
 	
 	
-	@GetMapping("/natureInvoice")
+	@GetMapping("/invoicePerContractor")
+	public String listInvoicesPerContractor(Model model,
+			@RequestParam(name = "startDate", defaultValue = "")@DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+            @RequestParam(name = "endDate", defaultValue = "")@DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+            String name,
+            @RequestParam(defaultValue = "0")int page,
+			@RequestParam(defaultValue = "20")int size) {
+		
+		    model.addAttribute("startDate", startDate);
+	        model.addAttribute("endDate", endDate);
+	        model.addAttribute("name", name);
+	        
+	        
+	        try {
+	        	List<Contractor> listTenders = iJournalService.getAllTenders("CONTRACT");
+			    model.addAttribute("tenders", listTenders);
+	        	if(startDate == null & endDate == null) {
+	        		Page<Invoice> listInvoices = iJournalService.listInvoices(page, size);
+	    			model.addAttribute("invoices", listInvoices.getContent());
+	    			int[] pages = new int[listInvoices.getTotalPages()]; 
+	    			model.addAttribute("pages", pages);
+	    			
+	        	}else {
+	        		List<Invoice> monthlyInvoices = iJournalService.invoicesPerMonth(startDate, endDate);
+	        		List<Invoice> invoicesPerTender = monthlyInvoices.stream().filter((invoice) -> invoice.getContractor().getName().equals(name))
+	        		                                                .collect(Collectors.toList());
+	        		Page<Invoice> listInvoices = new PageImpl<Invoice>(invoicesPerTender,PageRequest.of(page, size), invoicesPerTender.size());
+	        		model.addAttribute("invoices", listInvoices.getContent());
+	    			int[] pages = new int[listInvoices.getTotalPages()]; 
+	    			model.addAttribute("pages", pages);
+	    			double totalAmount = invoicesPerTender.stream().mapToDouble(invoice -> invoice.getAmount()).sum();
+	    			       model.addAttribute("amount", totalAmount);
+	        	}
+	        	
+	        	model.addAttribute("currentPage", page);
+	        }catch(Exception e) {
+	        	model.addAttribute("exception",e);
+	        }
+		
+		return "listInvoicesPerContractor";
+	}
+	
+	
+	
+	@GetMapping("/invoicePerAllowance")
 	public String natureInvoice(Model model,
-                @RequestParam(name = "nature",defaultValue = "")String nature,
                 @RequestParam(name = "startDate", defaultValue = "")@DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
                 @RequestParam(name = "endDate", defaultValue = "")@DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+                String allowanceName,
                 @RequestParam(defaultValue = "0")int page,
     			@RequestParam(defaultValue = "20")int size) {
 		
 				model.addAttribute("startDate", startDate);
 			    model.addAttribute("endDate", endDate);
-			    model.addAttribute("nature", nature);
+			    model.addAttribute("allowanceName", allowanceName);
 		
 			    try {
-					
-		        	if(startDate == null & endDate == null & nature == "") {
+					 List<Allowance> listAllowances = iJournalService.getAllAllowances();
+					 model.addAttribute("allowances", listAllowances);
+		        	if(startDate == null & endDate == null) {
 		        		
 		        		Page<Invoice> listInvoices = iJournalService.listInvoices(page, size);
 		    			model.addAttribute("invoices", listInvoices.getContent());
 		    			int[] pages = new int[listInvoices.getTotalPages()]; 
 		    			model.addAttribute("pages", pages);
 		        	}else {
-		        		
-		        		int amount = 0;
-		        		Page<Invoice> natureBills = iJournalService.InvoicesPerNatureAndMonth(startDate, endDate,nature, page, size);
-				    	List<Invoice> natureInvoices = iJournalService.invoicesSum(nature, startDate, endDate);
-				    	 
-				    	for(Invoice invoice:natureInvoices) {
-				    		amount = amount + invoice.getAmount();
-				    	}
-				    	
-						model.addAttribute("invoices", natureBills.getContent());
-						int[] pages = new int[natureBills.getTotalPages() - 1]; 
-						model.addAttribute("pages", pages);
-						model.addAttribute("amount", amount);
-					
+		        		List<Invoice> monthlyInvoices = iJournalService.invoicesPerMonth(startDate, endDate);
+		        		              monthlyInvoices.forEach(invoice -> System.out.println(invoice.getNature()));
+		        		List<Invoice> invoicesPerNature = monthlyInvoices.stream()
+		        				                                         .filter((invoice) -> invoice.getAllowance().getAllowanceName().equals(allowanceName))
+                                                                         .collect(Collectors.toList());
+		        		Page<Invoice> listInvoices = new PageImpl<Invoice>(invoicesPerNature,PageRequest.of(page, size), invoicesPerNature.size());
+		        		model.addAttribute("invoices", listInvoices.getContent());
+		    			int[] pages = new int[listInvoices.getTotalPages()]; 
+		    			model.addAttribute("pages", pages);
+		    			double totalAmount = invoicesPerNature.stream().mapToDouble(invoice -> invoice.getAmount()).sum();
+		    			       model.addAttribute("amount", totalAmount);
 		        	}
 					
 					model.addAttribute("currentPage", page);
@@ -291,7 +340,7 @@ public class JournalController {
 				}
 				
 		
-		return "nature";
+		return "listInvoicesPerNature";
 	}
 	
 	

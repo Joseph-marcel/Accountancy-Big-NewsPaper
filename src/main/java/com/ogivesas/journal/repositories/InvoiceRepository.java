@@ -18,10 +18,10 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String>{
 	@Query(value = "SELECT * FROM Invoice i  WHERE i.create_at = :createAt ORDER BY i.create_at DESC", nativeQuery = true)
 	 Page<Invoice> listInvoicesPerSearchDate(@Param("createAt") Date createAt,  PageRequest pageRequest);
 	
-	@Query(value = "SELECT * FROM Invoice i WHERE i.create_at BETWEEN :startDate AND :endDate  ORDER BY i.create_at DESC", nativeQuery = true)
-	 Page<Invoice> listInvoicesPerMonth(@Param("startDate") Date startDate, @Param("endDate") Date endDate, PageRequest pageRequest);
+	@Query(value = "SELECT * FROM Invoice i WHERE i.create_at BETWEEN :startDate AND :endDate AND  ORDER BY i.create_at DESC", nativeQuery = true)
+	 Page<Invoice> listInvoicesPerMonth(@Param("startDate") Date startDate, @Param("endDate") Date endDate,PageRequest pageRequest);
 	
-	@Query(value = "SELECT * FROM Invoice i WHERE i.create_at BETWEEN :startDate AND :endDate ", nativeQuery = true)
+	@Query(value = "SELECT * FROM Invoice i WHERE i.create_at BETWEEN :startDate AND :endDate ORDER BY i.create_at DESC", nativeQuery = true)
 	 List<Invoice> invoicesPerMonth(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 	
 	 Invoice findByInvoiceNumber(String invoiceNumber);
