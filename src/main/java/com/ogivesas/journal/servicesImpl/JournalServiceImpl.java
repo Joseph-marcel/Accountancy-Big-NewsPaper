@@ -168,7 +168,7 @@ public class JournalServiceImpl implements JournalService{
 	public List<Allowance> getAllAllowances() {
 		// TODO Auto-generated method stub
 		
-		return allowanceRepo.findAll();
+		return allowanceRepo.findAllByOrderByAllowanceNameAsc();
 	}
 
 	
